@@ -1,0 +1,14 @@
+img[src$='#me']
+{
+  float: left;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+figure {
+  text-align: center;
+}
+
+.twitter-tweet-rendered {
+  padding: 10px
+}

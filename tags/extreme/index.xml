@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>extreme on MLOops.dev</title>
+    <link>https://mikeczech.github.io/tags/extreme/</link>
+    <description>Recent content in extreme on MLOops.dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 01 Sep 2018 13:49:41 +0200</lastBuildDate>
+    
+	<atom:link href="https://mikeczech.github.io/tags/extreme/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Thoughts on Pair Programming</title>
+      <link>https://mikeczech.github.io/posts/pair-programming/</link>
+      <pubDate>Sat, 01 Sep 2018 13:49:41 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/posts/pair-programming/</guid>
+      <description>Pair programming! Apparently, there is no other agile practice that divides the dev community as this one. On one side, there are the evangelists who advocate full-time pair programming as the only means to write high-quality software. There also exist companies like Pivotal which have made this view an integral part of their culture. On the other side, there are developers who insist to work quietly on their own.
+Developer misconception #1: I do my best work with headphones on</description>
+    </item>
+    
+  </channel>
+</rss>

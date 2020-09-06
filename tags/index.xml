@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on MLOops.dev</title>
+    <link>https://mikeczech.github.io/tags/</link>
+    <description>Recent content in Tags on MLOops.dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Apr 2020 21:48:24 +0200</lastBuildDate>
+    
+	<atom:link href="https://mikeczech.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>data science</title>
+      <link>https://mikeczech.github.io/tags/data-science/</link>
+      <pubDate>Sat, 18 Apr 2020 21:48:24 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/data-science/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mlops</title>
+      <link>https://mikeczech.github.io/tags/mlops/</link>
+      <pubDate>Sat, 18 Apr 2020 21:48:24 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/mlops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>software engineering</title>
+      <link>https://mikeczech.github.io/tags/software-engineering/</link>
+      <pubDate>Sat, 18 Apr 2020 21:48:24 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/software-engineering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>testing</title>
+      <link>https://mikeczech.github.io/tags/testing/</link>
+      <pubDate>Sat, 18 Apr 2020 21:48:24 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>workflow management</title>
+      <link>https://mikeczech.github.io/tags/workflow-management/</link>
+      <pubDate>Sat, 18 Apr 2020 21:48:24 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/workflow-management/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>agile</title>
+      <link>https://mikeczech.github.io/tags/agile/</link>
+      <pubDate>Sat, 01 Sep 2018 13:49:41 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/agile/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>extreme</title>
+      <link>https://mikeczech.github.io/tags/extreme/</link>
+      <pubDate>Sat, 01 Sep 2018 13:49:41 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/extreme/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>programming</title>
+      <link>https://mikeczech.github.io/tags/programming/</link>
+      <pubDate>Sat, 01 Sep 2018 13:49:41 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>project</title>
+      <link>https://mikeczech.github.io/tags/project/</link>
+      <pubDate>Sat, 01 Sep 2018 13:49:41 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/project/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>team</title>
+      <link>https://mikeczech.github.io/tags/team/</link>
+      <pubDate>Sat, 01 Sep 2018 13:49:41 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/tags/team/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

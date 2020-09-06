@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MLOops.dev</title>
+    <link>https://mikeczech.github.io/</link>
+    <description>Recent content on MLOops.dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mikeczech.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>5 Lessons from Two Years of ML Engineering</title>
+      <link>https://mikeczech.github.io/posts/ml-engineering-five-lessons/</link>
+      <pubDate>Sat, 18 Apr 2020 21:48:24 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/posts/ml-engineering-five-lessons/</guid>
+      <description>Today, an increasing number of companies understand that data science isn’t just about presenting insights from data analysis to decision makers, but about building data science applications such as recommendation systems or spam filters. Thus, data science teams often not only consist of data scientists, but also of machine learning engineers who bridge the gap between data science and software engineering.
+I’m a machine learning engineer for two years now and want to share five lessons I’ve learned while working on a variety of products.</description>
+    </item>
+    
+    <item>
+      <title>Books</title>
+      <link>https://mikeczech.github.io/books/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mikeczech.github.io/books/</guid>
+      <description> Behave, Robert Sapolsky A book of Rather Strange Animals: Highlights and Wonders of Evolution and the Extraordinary Diversity of Life, Caleb Compton How to Get Filthy Rich in Rising Asia: A Novel, Mohsin Hamid Children of Time, Adrian Tchaikovsky Blackout, Marc Elsberg How to Lie with Statistics, Darrel Huff Animal Farm, George Orwell  </description>
+    </item>
+    
+    <item>
+      <title>Impressum</title>
+      <link>https://mikeczech.github.io/impressum/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mikeczech.github.io/impressum/</guid>
+      <description>Angaben gemäß § 5 TMG Mike Czech Beethovenstraße 6 22083 Hamburg Kontakt Telefon: +49 (0) 151 22884305
+Haftung für Inhalte Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</description>
+    </item>
+    
+    <item>
+      <title>whois</title>
+      <link>https://mikeczech.github.io/about/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mikeczech.github.io/about/</guid>
+      <description>👏 My name is Mike and I am a machine learning engineer living in Hamburg, Germany. I work for Otto Group data.works where I bridge data science and software engineering in e-commerce settings. I used to work for ThoughtWorks as a developer and consultant.
+Currently I work on products that use machine learning to enhance the online shopping experience and optimize business metrics. There, I am involved in every aspect of the design and implementation of real-world, data-driven services.</description>
+    </item>
+    
+    <item>
+      <title>Thoughts on Pair Programming</title>
+      <link>https://mikeczech.github.io/posts/pair-programming/</link>
+      <pubDate>Sat, 01 Sep 2018 13:49:41 +0200</pubDate>
+      
+      <guid>https://mikeczech.github.io/posts/pair-programming/</guid>
+      <description>Pair programming! Apparently, there is no other agile practice that divides the dev community as this one. On one side, there are the evangelists who advocate full-time pair programming as the only means to write high-quality software. There also exist companies like Pivotal which have made this view an integral part of their culture. On the other side, there are developers who insist to work quietly on their own.
+Developer misconception #1: I do my best work with headphones on</description>
+    </item>
+    
+  </channel>
+</rss>
