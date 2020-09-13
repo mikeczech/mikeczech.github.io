@@ -10,8 +10,7 @@ figure {
 }
 
 figure img{
-  width: auto;
-  max-width: 500px
+  max-width: 100%
 }
 
 .twitter-tweet-rendered {
