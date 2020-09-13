@@ -9,6 +9,11 @@ figure {
   text-align: center;
 }
 
+figure img{
+  width: auto;
+  max-width: 500px
+}
+
 .twitter-tweet-rendered {
   padding: 10px
 }
