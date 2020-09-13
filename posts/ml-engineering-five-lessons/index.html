@@ -151,7 +151,7 @@
 <p>In traditional software development, the feedback cycle while developing is fairly straightforward. For instance, in <strong>Test-Driven Development</strong> developers always write an automated test first, check that it fails, subsequently add code until the test succeeds, and repeat. Notice that the development speed largely depends on the ability to write and run tests fast.</p>
 <p>When building data science applications, the feedback cycle can introduce new challenges. Figure 1 depicts a simplified picture of such a cycle.</p>
 <figure>
-    <img src="/ds-feedback-loop.jpg" height="300em"/> <figcaption>
+    <img src="/ds-feedback-loop.jpg" height="270em"/> <figcaption>
             <h4>Figure 1: The General Structure of a Feedback Cycle in Data Science</h4>
         </figcaption>
 </figure>
@@ -217,7 +217,7 @@ assert_frame_equal(df, DataFrame({<span style="color:#f92672">...</span>}))
 <p>What also turned out to be helpful is to restrict every notebook to a single purpose (e.g. data preparation). The larger a notebook becomes the more likely a subtle mistake is made somewhere. Moreover, small, single-purpose notebooks are great for setting up multiple experiments that only differ in very specific ways (e.g. the type of model).</p>
 <p>A more controversal, but still interesting, idea is to let your workflow management <a href="https://netflixtechblog.com/scheduling-notebooks-348e6c14cfd6">automatically execute notebooks</a> to run tasks and generate plots on a regular basis, and yes, in production. Figure 5 illustrates this. Following all the best practices above, and only then, it definitely makes sense to me. This way we truly unite data science and product engineering.</p>
 <figure>
-    <img src="/notebooks.jpg" width="auto" height="500"/> <figcaption>
+    <img src="/notebooks.jpg" width="auto" height="410"/> <figcaption>
             <h4>Figure 5: Orchestrating a Composition of Notebooks</h4>
         </figcaption>
 </figure>
