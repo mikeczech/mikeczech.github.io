@@ -12,3 +12,8 @@ figure {
 .twitter-tweet-rendered {
   padding: 10px
 }
+
+.representative-image {
+  float:right;
+  width: 250px
+}
