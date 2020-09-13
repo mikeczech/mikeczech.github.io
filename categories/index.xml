@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on MLOops.dev</title>
-    <link>https://mikeczech.github.io/categories/</link>
+    <link>https://mloops.dev/categories/</link>
     <description>Recent content in Categories on MLOops.dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://mikeczech.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mloops.dev/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
