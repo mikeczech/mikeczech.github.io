@@ -3,6 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mloops.dev/tags/gcp/</loc>
+    <lastmod>2020-09-13T12:06:21+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mloops.dev/tags/google-cloud-platform/</loc>
+    <lastmod>2020-09-13T12:06:21+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mloops.dev/tags/packaging/</loc>
+    <lastmod>2020-09-13T12:06:21+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mloops.dev/posts/</loc>
+    <lastmod>2020-09-13T12:06:21+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mloops.dev/tags/python/</loc>
+    <lastmod>2020-09-13T12:06:21+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mloops.dev/posts/private-python-repo/</loc>
+    <lastmod>2020-09-13T12:06:21+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mloops.dev/tags/</loc>
+    <lastmod>2020-09-13T12:06:21+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mloops.dev/posts/ml-engineering-five-lessons/</loc>
     <lastmod>2020-04-18T21:48:24+02:00</lastmod>
   </url>
@@ -18,17 +53,7 @@
   </url>
   
   <url>
-    <loc>https://mloops.dev/posts/</loc>
-    <lastmod>2020-04-18T21:48:24+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://mloops.dev/tags/software-engineering/</loc>
-    <lastmod>2020-04-18T21:48:24+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mloops.dev/tags/</loc>
     <lastmod>2020-04-18T21:48:24+02:00</lastmod>
   </url>
   

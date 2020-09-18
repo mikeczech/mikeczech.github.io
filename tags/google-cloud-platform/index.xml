@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>google cloud platform on MLOops.dev</title>
+    <link>https://mloops.dev/tags/google-cloud-platform/</link>
+    <description>Recent content in google cloud platform on MLOops.dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 13 Sep 2020 12:06:21 +0200</lastBuildDate>
+    
+	<atom:link href="https://mloops.dev/tags/google-cloud-platform/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setting up a Private PyPI Repository on the Google Cloud Platform</title>
+      <link>https://mloops.dev/posts/private-python-repo/</link>
+      <pubDate>Sun, 13 Sep 2020 12:06:21 +0200</pubDate>
+      
+      <guid>https://mloops.dev/posts/private-python-repo/</guid>
+      <description>Every once in a while I am trying to solve a problem that is seemingly so fundamental that there must exist an off-the-shelf solution already. Setting up a private repository for Python packages on the Google Cloud Platform (GCP) falls into this category. But wait - almost every company produces source code that is not meant to become open-source, but needs to be distributed within the company. This can&amp;rsquo;t be that difficult, right?</description>
+    </item>
+    
+  </channel>
+</rss>

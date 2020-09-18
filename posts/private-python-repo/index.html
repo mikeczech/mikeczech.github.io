@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Setting up a Private PyPI Repository on the Google Cloud Platform | MLOops.dev</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://mloops.dev/custom.css">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://mloops.dev/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">MLOops.dev</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+    <a class="color-link nav-link" href="/about/">whois</a>
+  
+  <a class="color-link nav-link" href="https://mloops.dev/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/zenscr" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://www.linkedin.com/in/mczech" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,3.654102 C2,2.69908141 2.79442509,1.92397846 3.77383592,1.92397846 L24.2261641,1.92397846 C25.2058917,1.92397846 26,2.69908141 26,3.654102 L26,24.3462148 C26,25.3015521 25.2058917,26.0760215 24.2261641,26.0760215 L3.77383592,26.0760215 C2.79442509,26.0760215 2,25.3015521 2,24.3465315 L2,3.65378524 L2,3.654102 Z M9.27526132,22.1415901 L9.27526132,11.2356668 L5.65030092,11.2356668 L5.65030092,22.1415901 L9.27557808,22.1415901 L9.27526132,22.1415901 Z M7.46341463,9.74691162 C8.72727273,9.74691162 9.51409566,8.90940767 9.51409566,7.86284447 C9.49033893,6.79252455 8.72727273,5.97846056 7.48748812,5.97846056 C6.24675325,5.97846056 5.43649034,6.79252455 5.43649034,7.86284447 C5.43649034,8.90940767 6.22299652,9.74691162 7.4396579,9.74691162 L7.46309788,9.74691162 L7.46341463,9.74691162 Z M11.2815965,22.1415901 L14.9062401,22.1415901 L14.9062401,16.0519481 C14.9062401,15.7263225 14.9299968,15.4000634 15.0256573,15.1675641 C15.2876148,14.5159962 15.8840672,13.8416218 16.8856509,13.8416218 C18.1970225,13.8416218 18.7218879,14.8416218 18.7218879,16.3078872 L18.7218879,22.1415901 L22.3465315,22.1415901 L22.3465315,15.8885017 C22.3465315,12.5388027 20.5584416,10.9800443 18.1735825,10.9800443 C16.2182452,10.9800443 15.3595185,12.072854 14.8824834,12.8172315 L14.9065569,12.8172315 L14.9065569,11.2359835 L11.2819132,11.2359835 C11.3291099,12.2591067 11.2815965,22.1419069 11.2815965,22.1419069 L11.2815965,22.1415901 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/mikeczech" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p>
+    <a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a><br />
+	  <a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a><br />
+	  <a href="/impressum" target="_blank" rel="noopener">Impressum</a>
+  </p>
+
+	<script src="https://mloops.dev/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Setting up a Private PyPI Repository on the Google Cloud Platform</h1>
+    
+    <time>September 13, 2020</time>
+    
+    <div>
+        <p>
+        <p>Every once in a while I am trying to solve a problem that is seemingly so fundamental that there must exist an off-the-shelf solution already.
+<em>Setting up a private repository for Python packages on the Google Cloud Platform (GCP)</em> falls into this category.
+But wait - almost every company produces source code that is not meant to become open-source, but needs to be distributed within the company. This can&rsquo;t be that difficult, right?</p>
+<p>It&rsquo;s not that difficult to come up with something, but doing it right takes a bit more effort.
+What does that mean?</p>
+<ul>
+<li>
+<p>Authentication to that private repository should be based on <a href="https://cloud.google.com/iam">IAM</a> and not on requiring extra credentials for a public endpoint.</p>
+</li>
+<li>
+<p>The repository should work with managed services like <a href="https://cloud.google.com/cloud-build">Google Cloud Build</a> and dependency management tools like <a href="https://github.com/python-poetry/poetry">Poetry</a>, <a href="https://pip.pypa.io/en/stable/">pip</a>, and <a href="https://docs.conda.io/en/latest/">Conda</a>.</p>
+</li>
+<li>
+<p>Packages should be stored in a <a href="https://cloud.google.com/storage">Google Cloud Storage</a> bucket to make use of unlimited storage, backups, easy access, etc.</p>
+</li>
+</ul>
+<p>Most of the solutions I found online require at least an additional mechanism for authentication and, hence, introduce one more way to break into your infrastructure. Thus, a colleague and I tried something different.
+Figure 1 illustrates the architecture of a private Python repository running as a pod on the <a href="https://cloud.google.com/kubernetes-engine">Kubernetes Engine (GKE)</a>, using <a href="https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">port forwarding</a>, <a href="https://www.nginx.com/">NGINX</a>, and <a href="https://github.com/GoogleCloudPlatform/gcsfuse">gcsfuse</a>.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<figure>
+    <img src="/private-pypi.jpg"/> <figcaption>
+            <h4>Figure 1: Architecture</h4>
+        </figcaption>
+</figure>
+
+<p>In this architecture, the user of the repository first establishes a port forwarding that forwards requests of packages to the pod. The pod serves the contents of a GCS bucket using NGINX and gcsfuse. The bucket itself contains packages that are structured according to <a href="https://packaging.python.org/guides/hosting-your-own-index/">what pip expects</a>. Voila!</p>
+<p>Now, let&rsquo;s look at the details. Note that this guide assumes that a GKE cluster is already available and that there is a GCS bucket with the name <strong>your-project-pypapo</strong> that contains the contents of the repository (the name <em>pypapo</em> comes from the German colloquialism <a href="https://de.wikipedia.org/wiki/Pipapo">Pipapo</a>, which means &ldquo;with all the frills&rdquo;).</p>
+<p>The first step is to create a Docker image for a service that mounts the bucket with gcsfuse and serves its contents using NGINX:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> google/cloud-sdk:305.0.0-slim</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ARG</span> PROJECT<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PROJECT <span style="color:#e6db74">${</span>PROJECT<span style="color:#e6db74">}</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y --no-install-recommends ca-certificates wget autofs nginx <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;deb http://packages.cloud.google.com/apt cloud-sdk-xenial main&#34;</span> | tee /etc/apt/sources.list.d/google-cloud.sdk.list <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;deb http://packages.cloud.google.com/apt gcsfuse-xenial main&#34;</span> | tee /etc/apt/sources.list.d/gcsfuse.list <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> wget -qO- https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y --no-install-recommends google-cloud-sdk gcsfuse <span style="color:#f92672">&amp;&amp;</span> apt-get clean <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> mkdir -p /etc/autofs <span style="color:#f92672">&amp;&amp;</span> touch /etc/autofs/auto.gcsfuse <span style="color:#f92672">&amp;&amp;</span> rm -rf /var/lib/apt/lists <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> useradd -ms /bin/bash  pypapo <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> mkdir /repo-data <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> chown -R pypapo /repo-data <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> mkdir -p /var/log/nginx <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#f92672">&amp;&amp;</span> chown -R pypapo /var/log/nginx<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span><span style="color:#e6db74"> pypapo</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;bash&#34;</span>, <span style="color:#e6db74">&#34;-c&#34;</span>, <span style="color:#e6db74">&#34;nginx &amp;&amp; gcsfuse --implicit-dirs --foreground ${PROJECT}-pypapo /repo-data&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>We use <a href="https://cloud.google.com/cloud-build">Cloud Build</a> to build the image using the following configuration (<strong>cloudbuild.yaml</strong>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">steps</span>:
+- <span style="color:#66d9ef">name</span>: <span style="color:#e6db74">&#39;gcr.io/cloud-builders/docker&#39;</span>
+  <span style="color:#66d9ef">args</span>: [
+    <span style="color:#e6db74">&#39;build&#39;</span>,
+    <span style="color:#e6db74">&#39;-t&#39;</span>, <span style="color:#e6db74">&#39;eu.gcr.io/$PROJECT_ID/pypapo:latest&#39;</span>,
+    <span style="color:#e6db74">&#39;--build-arg&#39;</span>, <span style="color:#e6db74">&#39;PROJECT=$PROJECT_ID&#39;</span>,
+    <span style="color:#e6db74">&#39;-f&#39;</span>, <span style="color:#e6db74">&#39;Dockerfile&#39;</span>,
+    <span style="color:#e6db74">&#39;.&#39;</span>
+    ]
+<span style="color:#66d9ef">images</span>: [<span style="color:#e6db74">&#39;eu.gcr.io/$PROJECT_ID/pypapo:latest&#39;</span>]
+</code></pre></div><p>Then submit it:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcloud builds submit --config cloudbuild.yaml .
+</code></pre></div><p>The next step is to define a Kubernetes <strong>Deployment</strong> and <strong>Service</strong> based on the previously built image (<strong>pypapo.yaml</strong>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Service
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: pypapo-server
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">type</span>: NodePort
+  <span style="color:#66d9ef">ports</span>:
+  - <span style="color:#66d9ef">name</span>: web
+    <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">3333</span>
+    <span style="color:#66d9ef">targetPort</span>: <span style="color:#ae81ff">3333</span>
+    <span style="color:#66d9ef">protocol</span>: TCP
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">app</span>: pypapo
+---
+<span style="color:#66d9ef">apiVersion</span>: apps/v1
+<span style="color:#66d9ef">kind</span>: Deployment
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: pypapo
+  <span style="color:#66d9ef">namespace</span>: pypapo
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">matchLabels</span>:
+      <span style="color:#66d9ef">app</span>: pypapo
+  <span style="color:#66d9ef">template</span>:
+    <span style="color:#66d9ef">metadata</span>:
+      <span style="color:#66d9ef">labels</span>:
+        <span style="color:#66d9ef">app</span>: pypapo
+    <span style="color:#66d9ef">spec</span>:
+      <span style="color:#66d9ef">serviceAccount</span>: pypapo
+      <span style="color:#66d9ef">containers</span>:
+      - <span style="color:#66d9ef">name</span>: pypapo
+        <span style="color:#66d9ef">image</span>: <span style="color:#e6db74">&#34;eu.gcr.io/your-project/pypapo:latest&#34;</span>
+        <span style="color:#66d9ef">imagePullPolicy</span>: Always
+        <span style="color:#66d9ef">resources</span>:
+          <span style="color:#66d9ef">limits</span>:
+            <span style="color:#66d9ef">memory</span>: <span style="color:#e6db74">&#34;128Mi&#34;</span>
+            <span style="color:#66d9ef">cpu</span>: <span style="color:#e6db74">&#34;100m&#34;</span>
+        <span style="color:#66d9ef">securityContext</span>:
+          <span style="color:#66d9ef">privileged</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># due to gcsfuse</span>
+        <span style="color:#66d9ef">ports</span>:
+        - <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">3333</span>
+        <span style="color:#66d9ef">volumeMounts</span>:
+          - <span style="color:#66d9ef">mountPath</span>: /etc/nginx
+            <span style="color:#66d9ef">readOnly</span>: <span style="color:#66d9ef">true</span>
+            <span style="color:#66d9ef">name</span>: nginx-conf
+      <span style="color:#66d9ef">volumes</span>:
+        - <span style="color:#66d9ef">name</span>: nginx-conf
+          <span style="color:#66d9ef">configMap</span>:
+            <span style="color:#66d9ef">name</span>: nginx-conf
+            <span style="color:#66d9ef">items</span>:
+              - <span style="color:#66d9ef">key</span>: nginx.conf
+                <span style="color:#66d9ef">path</span>: nginx.conf
+---
+<span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: ConfigMap
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">namespace</span>: pypapo
+  <span style="color:#66d9ef">name</span>: nginx-conf
+<span style="color:#66d9ef">data</span>:
+  <span style="color:#66d9ef">nginx.conf</span>: <span style="color:#e6db74">|
+</span><span style="color:#e6db74">    error_log /tmp/error.log;</span>
+    pid       /tmp/nginx.pid;
+
+    events {}
+    http {
+      server {
+        listen       <span style="color:#ae81ff">3333</span>;
+
+        access_log /tmp/nginx_host.access.log;
+        client_body_temp_path /tmp/client_body;
+        fastcgi_temp_path /tmp/fastcgi_temp;
+        proxy_temp_path /tmp/proxy_temp;
+        scgi_temp_path /tmp/scgi_temp;
+        uwsgi_temp_path /tmp/uwsgi_temp;
+
+        <span style="color:#75715e"># Serve local files</span>
+        location / {
+          root /repo-data;
+          autoindex on;
+        }
+      }
+    }
+</code></pre></div><p>And apply it using <strong>kubectl</strong>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f pypapo.yaml
+</code></pre></div><p>After a few minutes, the service should be ready and we can &ndash; for example &ndash; use <a href="https://github.com/python-poetry/poetry">Poetry</a> to install packages from this repository. This requires a <strong>pyproject.toml</strong> file with an additional package source that points to <strong>localhost</strong> with the <strong>port</strong> our repository service is listening on.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">tool</span>.<span style="color:#a6e22e">poetry</span>]
+<span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;myproj&#34;</span>
+<span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.1.0&#34;</span>
+<span style="color:#a6e22e">description</span> = <span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#a6e22e">authors</span> = [<span style="color:#e6db74">&#34;mike&#34;</span>]
+
+[<span style="color:#a6e22e">tool</span>.<span style="color:#a6e22e">poetry</span>.<span style="color:#a6e22e">dependencies</span>]
+<span style="color:#a6e22e">python</span> = <span style="color:#e6db74">&#34;^3.7&#34;</span>
+<span style="color:#a6e22e">my</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">package</span> = <span style="color:#e6db74">&#34;^0.14.1&#34;</span>
+
+[[<span style="color:#a6e22e">tool</span>.<span style="color:#a6e22e">poetry</span>.<span style="color:#a6e22e">source</span>]]
+<span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;foo&#34;</span>
+<span style="color:#a6e22e">url</span> = <span style="color:#e6db74">&#34;http://localhost:3333&#34;</span>
+
+[<span style="color:#a6e22e">build</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">system</span>]
+<span style="color:#a6e22e">requires</span> = [<span style="color:#e6db74">&#34;poetry&gt;=0.12&#34;</span>]
+<span style="color:#a6e22e">build</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">backend</span> = <span style="color:#e6db74">&#34;poetry.masonry.api&#34;</span>
+</code></pre></div><p>Finally, we establish a port forwarding and install the packages.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl port-forward service/pypapo-server 3333:3333 <span style="color:#75715e"># run this in a separate shell</span>
+poetry install
+</code></pre></div><p>That&rsquo;s it! This setup now enables an easy distribution of Python packages among your projects.</p>
+<p>As with most solutions, there are caveats though. Using <a href="https://github.com/GoogleCloudPlatform/gcsfuse">gcsfuse</a> requires that the repository service runs in a <em>privileged security context</em>, which can be a risk. Furthermore, every user of the repository needs to have permissions for establishing a port forwarding, which can also have security-related implications. Nevertheless, this solution works well for us and we are planning to refine the architecture in the near future.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>Note that this architecture can be easily transferred to the <a href="https://cloud.google.com/compute">Compute Engine</a> using <a href="https://cloud.google.com/iap/docs/tcp-forwarding-overview">IAP TCP Forwarding</a> in case you do not want to use GKE. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/google-cloud-platform">#google cloud platform</a>
+        
+            <a class="tag" href="/tags/gcp">#gcp</a>
+        
+            <a class="tag" href="/tags/python">#python</a>
+        
+            <a class="tag" href="/tags/packaging">#packaging</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/zenscr" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://www.linkedin.com/in/mczech" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,3.654102 C2,2.69908141 2.79442509,1.92397846 3.77383592,1.92397846 L24.2261641,1.92397846 C25.2058917,1.92397846 26,2.69908141 26,3.654102 L26,24.3462148 C26,25.3015521 25.2058917,26.0760215 24.2261641,26.0760215 L3.77383592,26.0760215 C2.79442509,26.0760215 2,25.3015521 2,24.3465315 L2,3.65378524 L2,3.654102 Z M9.27526132,22.1415901 L9.27526132,11.2356668 L5.65030092,11.2356668 L5.65030092,22.1415901 L9.27557808,22.1415901 L9.27526132,22.1415901 Z M7.46341463,9.74691162 C8.72727273,9.74691162 9.51409566,8.90940767 9.51409566,7.86284447 C9.49033893,6.79252455 8.72727273,5.97846056 7.48748812,5.97846056 C6.24675325,5.97846056 5.43649034,6.79252455 5.43649034,7.86284447 C5.43649034,8.90940767 6.22299652,9.74691162 7.4396579,9.74691162 L7.46309788,9.74691162 L7.46341463,9.74691162 Z M11.2815965,22.1415901 L14.9062401,22.1415901 L14.9062401,16.0519481 C14.9062401,15.7263225 14.9299968,15.4000634 15.0256573,15.1675641 C15.2876148,14.5159962 15.8840672,13.8416218 16.8856509,13.8416218 C18.1970225,13.8416218 18.7218879,14.8416218 18.7218879,16.3078872 L18.7218879,22.1415901 L22.3465315,22.1415901 L22.3465315,15.8885017 C22.3465315,12.5388027 20.5584416,10.9800443 18.1735825,10.9800443 C16.2182452,10.9800443 15.3595185,12.072854 14.8824834,12.8172315 L14.9065569,12.8172315 L14.9065569,11.2359835 L11.2819132,11.2359835 C11.3291099,12.2591067 11.2815965,22.1419069 11.2815965,22.1419069 L11.2815965,22.1415901 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/mikeczech" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+		<span class="divider-bar">|</span>
+	  <p><a href="/impressum" target="_blank" rel="noopener">Impressum</a></p>
+	</div>
+
+	<script src="https://mloops.dev/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+
+    </body>
+</html>

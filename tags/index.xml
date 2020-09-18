@@ -6,10 +6,46 @@
     <description>Recent content in Tags on MLOops.dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 Apr 2020 21:48:24 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 13 Sep 2020 12:06:21 +0200</lastBuildDate>
     
 	<atom:link href="https://mloops.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>gcp</title>
+      <link>https://mloops.dev/tags/gcp/</link>
+      <pubDate>Sun, 13 Sep 2020 12:06:21 +0200</pubDate>
+      
+      <guid>https://mloops.dev/tags/gcp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>google cloud platform</title>
+      <link>https://mloops.dev/tags/google-cloud-platform/</link>
+      <pubDate>Sun, 13 Sep 2020 12:06:21 +0200</pubDate>
+      
+      <guid>https://mloops.dev/tags/google-cloud-platform/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>packaging</title>
+      <link>https://mloops.dev/tags/packaging/</link>
+      <pubDate>Sun, 13 Sep 2020 12:06:21 +0200</pubDate>
+      
+      <guid>https://mloops.dev/tags/packaging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://mloops.dev/tags/python/</link>
+      <pubDate>Sun, 13 Sep 2020 12:06:21 +0200</pubDate>
+      
+      <guid>https://mloops.dev/tags/python/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>data science</title>
