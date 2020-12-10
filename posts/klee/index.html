@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>programming | MLOops.dev</title>
+    <title>Concolic Testing With KLEE | MLOops.dev</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -29,8 +29,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://mloops.dev/tags/programming/index.xml" title="MLOops.dev" />
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
@@ -144,26 +142,101 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "programming"</h1>
-  
-  
+<h1 class="post-title">Concolic Testing With KLEE</h1>
     
-    <article>
-            <h2>
-                <a href="https://mloops.dev/posts/pair-programming/">
-                    Thoughts on Pair Programming as the Default
-                </a>
-            </h2>
-            <div>
-                <p>Pair programming! Apparently, there is no other agile practice that divides the dev community as this one. On one side, there are the evangelists who advocate full-time pair programming as the only means to write high-quality software. There also exist companies like Pivotal that have made this view an integral part of their culture. On the other side, there are developers who insist to work quietly on their own.
-Developer misconception #1: I do my best work with headphones on</p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 1, 2018</time>
-            </div> 
-        </article>
+    <time>August 7, 2014</time>
     
+    <div>
+        <p>
+        <p>In this blog post, I&rsquo;d like to introduce an automatic way to test a program.
+<a href="https://www.youtube.com/watch?v=XcT4yYu_TTs">Software testing isn&rsquo;t a trivial task</a> though and it&rsquo;s quite unlikely that it can be automated entirely (at least in the near future).
+Nevertheless, there is an interesting technique called Concolic Testing which can do this to some degree.</p>
+<h3 id="what-is-concolic-testing">What is Concolic Testing?</h3>
+<p>Concolic Testing combines concrete and <a href="https://en.wikipedia.org/wiki/Symbolic_execution">symbolic execution</a> for generating test-case suites where &ldquo;Concolic&rdquo; is a <a href="https://en.wikipedia.org/wiki/Portmanteau">portmanteau word</a> consisting of the words &ldquo;Concrete&rdquo; and &ldquo;Symbolic&rdquo;.
+This approach basically determines as many execution paths as possible and generates a conjunction of symbolic constraints along each path. Eventually, those will be passed to a constraint solver and, if feasible, the outcomes are input values of the given program. Such inputs always resemble the corresponding execution path, assuming deterministic behavior of the program only. In other words, they are equivalent to test-cases.</p>
+<p>Let&rsquo;s see an example. To this end, we are going to use <a href="http://klee.github.io/klee/">KLEE</a> as Concolic Testing engine and test the following simple implementation of Euclid&rsquo;s algorithm.</p>
+<pre><code>#include&lt;assert.h&gt;
+
+int gcd(int x, int y)
+{
+    while (x != y) {
+        if (x &gt; y)
+            x = x - y;
+        else
+            y = y - x;
+    }
+    return x;
+}
+
+int main(int argc, char **argv) {
+    int x, y, g;
+    scanf(&quot;%d&quot;, &amp;x);
+    scanf(&quot;%d&quot;, &amp;y);
+
+    if(x &gt; 0 &amp;&amp; y != 0) {
+        g = gcd(x, y);
+        assert(x % g == 0);
+        assert(y % g == 0);
+    }
+}
+</code></pre><p>First, some variables in the program must be tagged as symbolic. In this case, x and y are a good choice, since both shape the input for our gcd function. Hence, we replace both scanf lines with special KLEE commands.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">[...]
+<span style="color:#66d9ef">int</span> x, y, g;
+
+klee_make_symbolic(<span style="color:#f92672">&amp;</span>x, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>), <span style="color:#e6db74">&#34;x&#34;</span>); <span style="color:#75715e">// makes x symbolic
+</span><span style="color:#75715e"></span>klee_make_symbolic(<span style="color:#f92672">&amp;</span>y, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>), <span style="color:#e6db74">&#34;y&#34;</span>); <span style="color:#75715e">// makes y symbolic
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">if</span>(x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> y <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+[...]
+</code></pre></div><p>It remains to compile our code to LLVM bitcode and pass it to KLEE.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">llvm-gcc --emit-llvm -c -g gcd.c -o gcd.o 
+klee -max-time<span style="color:#f92672">=</span><span style="color:#ae81ff">120</span> -only-output-states-covering-new gcd.o
+</code></pre></div><p>In this example, the only-output-states-covering-new option forces KLEE to output a test only in case of an improvement in terms of code coverage. This makes KLEE a lot faster, because it won&rsquo;t output a test for each determined execution path. At the end, we should see the following output.</p>
+<pre><code>KLEE: output directory = &quot;klee-out-0&quot;
+KLEE: ERROR: /home/zenscr/experiments/gcd/gcd.c:23: ASSERTION FAIL: x % g == 0
+KLEE: NOTE: now ignoring this error at this location
+KLEE: HaltTimer invoked
+KLEE: halting execution, dumping remaining states
+
+KLEE: done: total instructions = 3165
+KLEE: done: completed paths = 189
+KLEE: done: generated tests = 6
+</code></pre>
+<p>Surprisingly, KLEE has even found an error (we forgot to check for y &gt; 0 instead of y != 0) and generated a total number of 6 tests! Nice, isn&rsquo;t it? However, we don&rsquo;t know anything about the quality of the generated tests yet.</p>
+<h3 id="evaluation-of-test-case-suites">Evaluation of Test-Case Suites</h3>
+<p>We can use the tool <a href="https://gcc.gnu.org/onlinedocs/gcc/Gcov.html">gcov</a> from the GNU Compiler Collection (GCC) to determine the code coverage of our test suite. To do this, we again compile our program with the GCC using some additional flags for gcov and KLEE.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmake" data-lang="cmake"><span style="color:#960050;background-color:#1e0010">override</span> <span style="color:#960050;background-color:#1e0010">CFLAGS</span> <span style="color:#960050;background-color:#1e0010">+=</span> <span style="color:#960050;background-color:#1e0010">-g</span> <span style="color:#960050;background-color:#1e0010">-fprofile-arcs</span> <span style="color:#960050;background-color:#1e0010">-ftest-coverage
+</span><span style="color:#960050;background-color:#1e0010">app:</span> <span style="color:#960050;background-color:#1e0010">gcd.c
+</span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#960050;background-color:#1e0010">gcc</span> <span style="color:#960050;background-color:#1e0010">-L</span> <span style="color:#960050;background-color:#1e0010">/your/path/to/klee/Release+Asserts/lib/</span> <span style="color:#960050;background-color:#1e0010">$(CFLAGS)</span> <span style="color:#960050;background-color:#1e0010">-o</span> <span style="color:#960050;background-color:#1e0010">gcd</span> <span style="color:#960050;background-color:#1e0010">gcd.c</span> <span style="color:#960050;background-color:#1e0010">-lkleeRuntest
+</span></code></pre></div><p>What remains now, is to execute the makefile and run each test from our suite on the generated executable where the directory klee-last points to the most recently generated suite.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make
+export LD_LIBRARY_PATH<span style="color:#f92672">=</span>/your/path/to/klee/Release+Asserts/lib/:$LD_LIBRARY_PATH
+<span style="color:#66d9ef">for</span> i in klee-last/*.ktest; <span style="color:#66d9ef">do</span> KTEST_FILE<span style="color:#f92672">=</span>$i ./gcd; <span style="color:#66d9ef">done</span>
+</code></pre></div><p>Afterwards, we will see the corresponding code coverage by simply applying gcov:</p>
+<pre><code>gcov gcd
+File 'gcd.c'
+Lines executed:100.00% of 14
+Creating 'gcd.c.gcov'
+</code></pre>
+<p>We have got a code coverage of exactly 100%! However, full code coverage doesn&rsquo;t mean this code is free of bugs, but it&rsquo;s clearly a step in the right direction. Even in real-life software KLEE performs quite well already. For instance, KLEE-generated tests achieve for the GNU Coreutils a code coverage of over 90% on average.</p>
+<p>I hope this post has given you a small insight into Concolic Testing and it&rsquo;s application using KLEE. There also exist similar tools which generate tests more or less the same way.  To name a few ones, there is <a href="https://research.microsoft.com/en-us/projects/pex/">PEX</a> (for .NET) and <a href="http://pathcrawler-online.com/">PathCrawler</a> (also for ANSI C and C++).  Unfortunately, Concolic Testing is still subject of research and most tools don&rsquo;t seem that mature.</p>
+
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/testing">#testing</a>
+        
+            <a class="tag" href="/tags/research">#research</a>
+        
+      
+    </div>
 
 
         

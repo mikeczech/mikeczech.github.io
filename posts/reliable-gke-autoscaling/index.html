@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>programming | MLOops.dev</title>
+    <title>Why is my Cluster not Scaling Down? | MLOops.dev</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -29,8 +29,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://mloops.dev/tags/programming/index.xml" title="MLOops.dev" />
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
@@ -144,26 +142,123 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "programming"</h1>
-  
-  
+<h1 class="post-title">Why is my Cluster not Scaling Down?</h1>
     
-    <article>
-            <h2>
-                <a href="https://mloops.dev/posts/pair-programming/">
-                    Thoughts on Pair Programming as the Default
-                </a>
-            </h2>
-            <div>
-                <p>Pair programming! Apparently, there is no other agile practice that divides the dev community as this one. On one side, there are the evangelists who advocate full-time pair programming as the only means to write high-quality software. There also exist companies like Pivotal that have made this view an integral part of their culture. On the other side, there are developers who insist to work quietly on their own.
-Developer misconception #1: I do my best work with headphones on</p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 1, 2018</time>
-            </div> 
-        </article>
+    <time>April 6, 2019</time>
     
+    <div>
+        <p>
+        <p>In my team, we regularly run batch jobs with very specific hardware requirements. A typical example is model training which usually requires (multiple) GPUs to finish within a reasonable amount of time. To run such jobs, we use the <a href="https://cloud.google.com/kubernetes-engine/"><em>Google Kubernetes Engine</em> (GKE)</a> which is a managed service on the Google Cloud Platform (GCP). The workflow is to submit a job and let Kubernetes allocate the required resources, run the job, and finally deallocate the acquired resources to avoid unnecessary costs. Typically, Kubernetes acquires new resources by provisioning new compute nodes and adding them to the cluster.</p>
+<p>GKE makes this workflow a no-brainer, but sometimes gets tricky when it comes to the details. In the past, we had the problem that Kubernetes sometimes didn&rsquo;t remove (apparently) unused nodes from the cluster again, increasing our cloud bill on a regular basis. Before clarifying why our nodes got stuck, let&rsquo;s first look at a typical GKE configuration using <a href="https://www.terraform.io/">Terraform</a>:</p>
+<pre><code>provider &quot;google-beta&quot; {
+  project = &quot;myproject&quot;
+  region  = &quot;europe-west1&quot;
+}
+
+resource &quot;google_container_cluster&quot; &quot;primary&quot; {
+  name               = &quot;my-cluster&quot;
+  initial_node_count = 2
+  subnetwork         = &quot;default-europe-west1&quot;
+
+  addons_config {
+    kubernetes_dashboard {
+      disabled = true
+    }
+  }
+
+  node_config {
+    machine_type = &quot;n1-standard-1&quot;
+    oauth_scopes = [&quot;https://www.googleapis.com/auth/cloud-platform&quot;]
+    disk_size_gb = 20
+  }
+}
+
+resource &quot;google_container_node_pool&quot; &quot;model-training-np&quot; {
+  provider           = &quot;google-beta&quot;
+  name               = &quot;training-np&quot;
+  cluster            = &quot;my-cluster&quot;
+  initial_node_count = 0
+
+  autoscaling {
+    min_node_count = 0
+    max_node_count = 3
+  }
+
+  node_config {
+    machine_type = &quot;n1-standard-32&quot;
+    oauth_scopes = [&quot;https://www.googleapis.com/auth/cloud-platform&quot;]
+    disk_size_gb = 100
+
+    guest_accelerator {
+      type  = &quot;nvidia-tesla-k80&quot;
+      count = 4
+    }
+  }
+}
+</code></pre><p>This configuration creates a GKE cluster with a <em>default node pool</em> of two compute nodes, each one having one vCPU and about 4GB of RAM. That&rsquo;s usually sufficient for running all the GKE system services. In addition, there is a second node pool for model training where the initial node count is zero. This node pool will provide us with on-demand nodes, each one having 32 vCPUs, 120GB of RAM, and 4 GPUs! Note that autoscaling ensures a maximum number of three nodes. Thus, whenever a job is submitted to this node pool, Kubernetes automatically provisions up to three nodes in order to run our jobs. First, let&rsquo;s deploy this configuration to your GCP project:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcloud auth application-default login <span style="color:#75715e"># authenticate yourself to GCP</span>
+terraform plan <span style="color:#75715e"># check what Terraform is going to do</span>
+terraform apply <span style="color:#75715e"># apply the changes</span>
+</code></pre></div><p>The following snippet illustrates how a typical <a href="https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/">job configuration</a> looks like. Notice that we use a <em>node selector</em> to assign this job to our training node pool.</p>
+<pre><code>apiVersion: batch/v1
+kind: Job
+metadata:
+  name: &quot;build-model&quot;
+spec:
+  template:
+    spec:
+      containers:
+      - name: &quot;build-model&quot;
+        image: &quot;python:3.7.3-alpine3.9&quot;
+        command: [&quot;echo&quot;, &quot;train my model&quot;]
+        resources:
+          requests:
+            cpu: 24
+      restartPolicy: Never
+      nodeSelector:
+        cloud.google.com/gke-nodepool: &quot;training-np&quot;
+  backoffLimit: 0
+</code></pre><p>Let&rsquo;s submit this job to our freshly created GKE cluster:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f job.yaml
+</code></pre></div><p>You&rsquo;ll see that Kubernetes now realizes that it is not able to schedule the job with the currently available nodes (remember that the initial node count of our training node pool is zero!). Thus, it creates a new node, adds it to the training node pool, and eventually runs the job on that node. So far, so good. When the job has finished, we expect Kubernetes to autoscale the node count to zero again. In case of GKE, it usually takes 20 to 30 minutes for the autoscaler to become active. As it turns out, however, you&rsquo;ll notice that such nodes sometimes just remain inside the node pool, because Kubernetes re-scheduled system services to our training nodes. To avoid running services in places where they do not belong, we must add a <em>taint</em> to our node pool configuration.</p>
+<pre><code>...
+  node_config {
+    ...
+    taint {
+      key    = &quot;special&quot;
+      value  = &quot;strong-cpu&quot;
+      effect = &quot;NO_SCHEDULE&quot;
+    }
+  }
+...
+</code></pre><p>A taint makes Kubernetes only assign workloads which tolerate that taint. Thus, we also add a toleration for that taint to our job configuration:</p>
+<pre><code>...
+      tolerations:
+      - key: &quot;special&quot;
+        operator: &quot;Equal&quot;
+        value: &quot;strong-cpu&quot;
+        effect: &quot;NoSchedule&quot;
+...
+</code></pre><p>That&rsquo;s basically it! Now we made sure that the autoscaling works reliably and our manager is happy that we only pay for resources that we actually use.</p>
+
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/google-cloud-platform">#google cloud platform</a>
+        
+            <a class="tag" href="/tags/kubernetes">#kubernetes</a>
+        
+            <a class="tag" href="/tags/machine-learning">#machine learning</a>
+        
+      
+    </div>
 
 
         

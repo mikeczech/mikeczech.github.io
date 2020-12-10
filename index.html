@@ -2,7 +2,7 @@
 
 <html lang="en-us">
     <head>
-	<meta name="generator" content="Hugo 0.68.3" />
+	<meta name="generator" content="Hugo 0.76.3" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +32,10 @@
  
     
     <link rel="alternate" type="application/rss+xml" href="https://mloops.dev/index.xml" title="MLOops.dev" />
-    </head>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
 
     <body>
         
@@ -181,7 +184,7 @@
         <article>
             <h2>
                 <a href="https://mloops.dev/posts/ml-engineering-five-lessons/">
-                    5 Lessons from Two Years of ML Engineering
+                    Five Lessons from Two Years of ML Engineering
                 </a>
             </h2>
             <div>
@@ -217,6 +220,36 @@ I’m a machine learning engineer for two years now and want to share five lesso
         
         <article>
             <h2>
+                <a href="https://mloops.dev/posts/reliable-gke-autoscaling/">
+                    Why is my Cluster not Scaling Down?
+                </a>
+            </h2>
+            <div>
+                <p>
+                  
+                  In my team, we regularly run batch jobs with very specific hardware requirements. A typical example is model training which usually requires (multiple) GPUs to finish within a reasonable amount of time. To run such jobs, we use the Google Kubernetes Engine (GKE) which is a managed service on the Google Cloud Platform (GCP). The workflow is to submit a job and let Kubernetes allocate the required resources, run the job, and finally deallocate the acquired resources to avoid unnecessary costs.
+                </p>
+                
+            </div>
+            <div class="post-footer">
+            <time>April 6, 2019</time>
+
+            
+            
+                
+                    <a class="tag" href="/tags/google-cloud-platform">#google cloud platform</a>
+                
+                    <a class="tag" href="/tags/kubernetes">#kubernetes</a>
+                
+                    <a class="tag" href="/tags/machine-learning">#machine learning</a>
+                
+            
+            </div> 
+           
+        </article>
+        
+        <article>
+            <h2>
                 <a href="https://mloops.dev/posts/pair-programming/">
                     Thoughts on Pair Programming as the Default
                 </a>
@@ -244,6 +277,35 @@ Developer misconception #1: I do my best work with headphones on
                     <a class="tag" href="/tags/project">#project</a>
                 
                     <a class="tag" href="/tags/team">#team</a>
+                
+            
+            </div> 
+           
+        </article>
+        
+        <article>
+            <h2>
+                <a href="https://mloops.dev/posts/klee/">
+                    Concolic Testing With KLEE
+                </a>
+            </h2>
+            <div>
+                <p>
+                  
+                  In this blog post, I&rsquo;d like to introduce an automatic way to test a program. Software testing isn&rsquo;t a trivial task though and it&rsquo;s quite unlikely that it can be automated entirely (at least in the near future). Nevertheless, there is an interesting technique called Concolic Testing which can do this to some degree.
+What is Concolic Testing? Concolic Testing combines concrete and symbolic execution for generating test-case suites where &ldquo;Concolic&rdquo; is a portmanteau word consisting of the words &ldquo;Concrete&rdquo; and &ldquo;Symbolic&rdquo;.
+                </p>
+                
+            </div>
+            <div class="post-footer">
+            <time>August 7, 2014</time>
+
+            
+            
+                
+                    <a class="tag" href="/tags/testing">#testing</a>
+                
+                    <a class="tag" href="/tags/research">#research</a>
                 
             
             </div> 

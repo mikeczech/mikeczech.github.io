@@ -6,11 +6,7 @@
     <description>Recent content in google cloud platform on MLOops.dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 13 Sep 2020 12:06:21 +0200</lastBuildDate>
-    
-	<atom:link href="https://mloops.dev/tags/google-cloud-platform/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 13 Sep 2020 12:06:21 +0200</lastBuildDate><atom:link href="https://mloops.dev/tags/google-cloud-platform/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Setting up a Private PyPI Repository on the Google Cloud Platform</title>
       <link>https://mloops.dev/posts/private-python-repo/</link>
@@ -18,6 +14,15 @@
       
       <guid>https://mloops.dev/posts/private-python-repo/</guid>
       <description>Every once in a while I am trying to solve a problem that is seemingly so fundamental that there must exist an off-the-shelf solution already. Setting up a private repository for Python packages on the Google Cloud Platform (GCP) falls into this category. But wait - almost every company produces source code that is not meant to become open-source, but needs to be distributed within the company. This can&amp;rsquo;t be that difficult, right?</description>
+    </item>
+    
+    <item>
+      <title>Why is my Cluster not Scaling Down?</title>
+      <link>https://mloops.dev/posts/reliable-gke-autoscaling/</link>
+      <pubDate>Sat, 06 Apr 2019 14:54:46 +0200</pubDate>
+      
+      <guid>https://mloops.dev/posts/reliable-gke-autoscaling/</guid>
+      <description>In my team, we regularly run batch jobs with very specific hardware requirements. A typical example is model training which usually requires (multiple) GPUs to finish within a reasonable amount of time. To run such jobs, we use the Google Kubernetes Engine (GKE) which is a managed service on the Google Cloud Platform (GCP). The workflow is to submit a job and let Kubernetes allocate the required resources, run the job, and finally deallocate the acquired resources to avoid unnecessary costs.</description>
     </item>
     
   </channel>

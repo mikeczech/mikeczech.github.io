@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>research on MLOops.dev</title>
+    <link>https://mloops.dev/tags/research/</link>
+    <description>Recent content in research on MLOops.dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 07 Aug 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://mloops.dev/tags/research/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Concolic Testing With KLEE</title>
+      <link>https://mloops.dev/posts/klee/</link>
+      <pubDate>Thu, 07 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://mloops.dev/posts/klee/</guid>
+      <description>In this blog post, I&amp;rsquo;d like to introduce an automatic way to test a program. Software testing isn&amp;rsquo;t a trivial task though and it&amp;rsquo;s quite unlikely that it can be automated entirely (at least in the near future). Nevertheless, there is an interesting technique called Concolic Testing which can do this to some degree.
+What is Concolic Testing? Concolic Testing combines concrete and symbolic execution for generating test-case suites where &amp;ldquo;Concolic&amp;rdquo; is a portmanteau word consisting of the words &amp;ldquo;Concrete&amp;rdquo; and &amp;ldquo;Symbolic&amp;rdquo;.</description>
+    </item>
+    
+  </channel>
+</rss>

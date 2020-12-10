@@ -29,7 +29,10 @@
     
     
  
-    </head>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
 
     <body>
         
@@ -152,7 +155,7 @@ But wait - almost every company produces source code that is not meant to become
 What does that mean?</p>
 <ul>
 <li>
-<p>Authentication to that private repository should be based on <a href="https://cloud.google.com/iam">IAM</a> and not on requiring extra credentials for a public endpoint.</p>
+<p>Authentication to that private repository should be based on <a href="https://cloud.google.com/iam">IAM</a> and should not require extra credentials for a public endpoint.</p>
 </li>
 <li>
 <p>The repository should work with managed services like <a href="https://cloud.google.com/cloud-build">Google Cloud Build</a> and dependency management tools like <a href="https://github.com/python-poetry/poetry">Poetry</a>, <a href="https://pip.pypa.io/en/stable/">pip</a>, and <a href="https://docs.conda.io/en/latest/">Conda</a>.</p>
@@ -191,101 +194,101 @@ Figure 1 illustrates the architecture of a private Python repository running as 
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span><span style="color:#e6db74"> pypapo</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;bash&#34;</span>, <span style="color:#e6db74">&#34;-c&#34;</span>, <span style="color:#e6db74">&#34;nginx &amp;&amp; gcsfuse --implicit-dirs --foreground ${PROJECT}-pypapo /repo-data&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>We use <a href="https://cloud.google.com/cloud-build">Cloud Build</a> to build the image using the following configuration (<strong>cloudbuild.yaml</strong>):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">steps</span>:
-- <span style="color:#66d9ef">name</span>: <span style="color:#e6db74">&#39;gcr.io/cloud-builders/docker&#39;</span>
-  <span style="color:#66d9ef">args</span>: [
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">steps</span>:
+- <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#39;gcr.io/cloud-builders/docker&#39;</span>
+  <span style="color:#f92672">args</span>: [
     <span style="color:#e6db74">&#39;build&#39;</span>,
     <span style="color:#e6db74">&#39;-t&#39;</span>, <span style="color:#e6db74">&#39;eu.gcr.io/$PROJECT_ID/pypapo:latest&#39;</span>,
     <span style="color:#e6db74">&#39;--build-arg&#39;</span>, <span style="color:#e6db74">&#39;PROJECT=$PROJECT_ID&#39;</span>,
     <span style="color:#e6db74">&#39;-f&#39;</span>, <span style="color:#e6db74">&#39;Dockerfile&#39;</span>,
     <span style="color:#e6db74">&#39;.&#39;</span>
     ]
-<span style="color:#66d9ef">images</span>: [<span style="color:#e6db74">&#39;eu.gcr.io/$PROJECT_ID/pypapo:latest&#39;</span>]
+<span style="color:#f92672">images</span>: [<span style="color:#e6db74">&#39;eu.gcr.io/$PROJECT_ID/pypapo:latest&#39;</span>]
 </code></pre></div><p>Then submit it:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcloud builds submit --config cloudbuild.yaml .
 </code></pre></div><p>The next step is to define a Kubernetes <strong>Deployment</strong> and <strong>Service</strong> based on the previously built image (<strong>pypapo.yaml</strong>):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
-<span style="color:#66d9ef">kind</span>: Service
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: pypapo-server
-<span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">type</span>: NodePort
-  <span style="color:#66d9ef">ports</span>:
-  - <span style="color:#66d9ef">name</span>: web
-    <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">3333</span>
-    <span style="color:#66d9ef">targetPort</span>: <span style="color:#ae81ff">3333</span>
-    <span style="color:#66d9ef">protocol</span>: TCP
-  <span style="color:#66d9ef">selector</span>:
-    <span style="color:#66d9ef">app</span>: pypapo
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Service</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">pypapo-server</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">type</span>: <span style="color:#ae81ff">NodePort</span>
+  <span style="color:#f92672">ports</span>:
+  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">web</span>
+    <span style="color:#f92672">port</span>: <span style="color:#ae81ff">3333</span>
+    <span style="color:#f92672">targetPort</span>: <span style="color:#ae81ff">3333</span>
+    <span style="color:#f92672">protocol</span>: <span style="color:#ae81ff">TCP</span>
+  <span style="color:#f92672">selector</span>:
+    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">pypapo</span>
 ---
-<span style="color:#66d9ef">apiVersion</span>: apps/v1
-<span style="color:#66d9ef">kind</span>: Deployment
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: pypapo
-  <span style="color:#66d9ef">namespace</span>: pypapo
-<span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">selector</span>:
-    <span style="color:#66d9ef">matchLabels</span>:
-      <span style="color:#66d9ef">app</span>: pypapo
-  <span style="color:#66d9ef">template</span>:
-    <span style="color:#66d9ef">metadata</span>:
-      <span style="color:#66d9ef">labels</span>:
-        <span style="color:#66d9ef">app</span>: pypapo
-    <span style="color:#66d9ef">spec</span>:
-      <span style="color:#66d9ef">serviceAccount</span>: pypapo
-      <span style="color:#66d9ef">containers</span>:
-      - <span style="color:#66d9ef">name</span>: pypapo
-        <span style="color:#66d9ef">image</span>: <span style="color:#e6db74">&#34;eu.gcr.io/your-project/pypapo:latest&#34;</span>
-        <span style="color:#66d9ef">imagePullPolicy</span>: Always
-        <span style="color:#66d9ef">resources</span>:
-          <span style="color:#66d9ef">limits</span>:
-            <span style="color:#66d9ef">memory</span>: <span style="color:#e6db74">&#34;128Mi&#34;</span>
-            <span style="color:#66d9ef">cpu</span>: <span style="color:#e6db74">&#34;100m&#34;</span>
-        <span style="color:#66d9ef">securityContext</span>:
-          <span style="color:#66d9ef">privileged</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># due to gcsfuse</span>
-        <span style="color:#66d9ef">ports</span>:
-        - <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">3333</span>
-        <span style="color:#66d9ef">volumeMounts</span>:
-          - <span style="color:#66d9ef">mountPath</span>: /etc/nginx
-            <span style="color:#66d9ef">readOnly</span>: <span style="color:#66d9ef">true</span>
-            <span style="color:#66d9ef">name</span>: nginx-conf
-      <span style="color:#66d9ef">volumes</span>:
-        - <span style="color:#66d9ef">name</span>: nginx-conf
-          <span style="color:#66d9ef">configMap</span>:
-            <span style="color:#66d9ef">name</span>: nginx-conf
-            <span style="color:#66d9ef">items</span>:
-              - <span style="color:#66d9ef">key</span>: nginx.conf
-                <span style="color:#66d9ef">path</span>: nginx.conf
+<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">pypapo</span>
+  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">pypapo</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">selector</span>:
+    <span style="color:#f92672">matchLabels</span>:
+      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">pypapo</span>
+  <span style="color:#f92672">template</span>:
+    <span style="color:#f92672">metadata</span>:
+      <span style="color:#f92672">labels</span>:
+        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">pypapo</span>
+    <span style="color:#f92672">spec</span>:
+      <span style="color:#f92672">serviceAccount</span>: <span style="color:#ae81ff">pypapo</span>
+      <span style="color:#f92672">containers</span>:
+      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">pypapo</span>
+        <span style="color:#f92672">image</span>: <span style="color:#e6db74">&#34;eu.gcr.io/your-project/pypapo:latest&#34;</span>
+        <span style="color:#f92672">imagePullPolicy</span>: <span style="color:#ae81ff">Always</span>
+        <span style="color:#f92672">resources</span>:
+          <span style="color:#f92672">limits</span>:
+            <span style="color:#f92672">memory</span>: <span style="color:#e6db74">&#34;128Mi&#34;</span>
+            <span style="color:#f92672">cpu</span>: <span style="color:#e6db74">&#34;100m&#34;</span>
+        <span style="color:#f92672">securityContext</span>:
+          <span style="color:#f92672">privileged</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># due to gcsfuse</span>
+        <span style="color:#f92672">ports</span>:
+        - <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">3333</span>
+        <span style="color:#f92672">volumeMounts</span>:
+          - <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/etc/nginx</span>
+            <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
+            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-conf</span>
+      <span style="color:#f92672">volumes</span>:
+        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-conf</span>
+          <span style="color:#f92672">configMap</span>:
+            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-conf</span>
+            <span style="color:#f92672">items</span>:
+              - <span style="color:#f92672">key</span>: <span style="color:#ae81ff">nginx.conf</span>
+                <span style="color:#f92672">path</span>: <span style="color:#ae81ff">nginx.conf</span>
 ---
-<span style="color:#66d9ef">apiVersion</span>: v1
-<span style="color:#66d9ef">kind</span>: ConfigMap
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">namespace</span>: pypapo
-  <span style="color:#66d9ef">name</span>: nginx-conf
-<span style="color:#66d9ef">data</span>:
-  <span style="color:#66d9ef">nginx.conf</span>: <span style="color:#e6db74">|
-</span><span style="color:#e6db74">    error_log /tmp/error.log;</span>
-    pid       /tmp/nginx.pid;
-
-    events {}
-    http {
-      server {
-        listen       <span style="color:#ae81ff">3333</span>;
-
-        access_log /tmp/nginx_host.access.log;
-        client_body_temp_path /tmp/client_body;
-        fastcgi_temp_path /tmp/fastcgi_temp;
-        proxy_temp_path /tmp/proxy_temp;
-        scgi_temp_path /tmp/scgi_temp;
-        uwsgi_temp_path /tmp/uwsgi_temp;
-
-        <span style="color:#75715e"># Serve local files</span>
-        location / {
-          root /repo-data;
-          autoindex on;
-        }
-      }
-    }
+<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">pypapo</span>
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-conf</span>
+<span style="color:#f92672">data</span>:
+  <span style="color:#f92672">nginx.conf</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">    error_log /tmp/error.log;
+</span><span style="color:#e6db74">    pid       /tmp/nginx.pid;
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    events {}
+</span><span style="color:#e6db74">    http {
+</span><span style="color:#e6db74">      server {
+</span><span style="color:#e6db74">        listen       3333;
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">        access_log /tmp/nginx_host.access.log;
+</span><span style="color:#e6db74">        client_body_temp_path /tmp/client_body;
+</span><span style="color:#e6db74">        fastcgi_temp_path /tmp/fastcgi_temp;
+</span><span style="color:#e6db74">        proxy_temp_path /tmp/proxy_temp;
+</span><span style="color:#e6db74">        scgi_temp_path /tmp/scgi_temp;
+</span><span style="color:#e6db74">        uwsgi_temp_path /tmp/uwsgi_temp;
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">        # Serve local files
+</span><span style="color:#e6db74">        location / {
+</span><span style="color:#e6db74">          root /repo-data;
+</span><span style="color:#e6db74">          autoindex on;
+</span><span style="color:#e6db74">        }
+</span><span style="color:#e6db74">      }
+</span><span style="color:#e6db74">    }</span>    
 </code></pre></div><p>And apply it using <strong>kubectl</strong>:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f pypapo.yaml
 </code></pre></div><p>After a few minutes, the service should be ready and we can &ndash; for example &ndash; use <a href="https://github.com/python-poetry/poetry">Poetry</a> to install packages from this repository. This requires a <strong>pyproject.toml</strong> file with an additional package source that points to <strong>localhost</strong> with the <strong>port</strong> our repository service is listening on.</p>

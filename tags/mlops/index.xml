@@ -6,13 +6,9 @@
     <description>Recent content in mlops on MLOops.dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 Apr 2020 21:48:24 +0200</lastBuildDate>
-    
-	<atom:link href="https://mloops.dev/tags/mlops/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 18 Apr 2020 21:48:24 +0200</lastBuildDate><atom:link href="https://mloops.dev/tags/mlops/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>5 Lessons from Two Years of ML Engineering</title>
+      <title>Five Lessons from Two Years of ML Engineering</title>
       <link>https://mloops.dev/posts/ml-engineering-five-lessons/</link>
       <pubDate>Sat, 18 Apr 2020 21:48:24 +0200</pubDate>
       

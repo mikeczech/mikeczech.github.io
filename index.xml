@@ -6,11 +6,7 @@
     <description>Recent content on MLOops.dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://mloops.dev/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 13 Sep 2020 12:06:21 +0200</lastBuildDate><atom:link href="https://mloops.dev/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Setting up a Private PyPI Repository on the Google Cloud Platform</title>
       <link>https://mloops.dev/posts/private-python-repo/</link>
@@ -21,7 +17,7 @@
     </item>
     
     <item>
-      <title>5 Lessons from Two Years of ML Engineering</title>
+      <title>Five Lessons from Two Years of ML Engineering</title>
       <link>https://mloops.dev/posts/ml-engineering-five-lessons/</link>
       <pubDate>Sat, 18 Apr 2020 21:48:24 +0200</pubDate>
       
@@ -60,6 +56,15 @@ Currently I work on products that use machine learning to enhance the online sho
     </item>
     
     <item>
+      <title>Why is my Cluster not Scaling Down?</title>
+      <link>https://mloops.dev/posts/reliable-gke-autoscaling/</link>
+      <pubDate>Sat, 06 Apr 2019 14:54:46 +0200</pubDate>
+      
+      <guid>https://mloops.dev/posts/reliable-gke-autoscaling/</guid>
+      <description>In my team, we regularly run batch jobs with very specific hardware requirements. A typical example is model training which usually requires (multiple) GPUs to finish within a reasonable amount of time. To run such jobs, we use the Google Kubernetes Engine (GKE) which is a managed service on the Google Cloud Platform (GCP). The workflow is to submit a job and let Kubernetes allocate the required resources, run the job, and finally deallocate the acquired resources to avoid unnecessary costs.</description>
+    </item>
+    
+    <item>
       <title>Thoughts on Pair Programming as the Default</title>
       <link>https://mloops.dev/posts/pair-programming/</link>
       <pubDate>Sat, 01 Sep 2018 13:49:41 +0200</pubDate>
@@ -67,6 +72,16 @@ Currently I work on products that use machine learning to enhance the online sho
       <guid>https://mloops.dev/posts/pair-programming/</guid>
       <description>Pair programming! Apparently, there is no other agile practice that divides the dev community as this one. On one side, there are the evangelists who advocate full-time pair programming as the only means to write high-quality software. There also exist companies like Pivotal that have made this view an integral part of their culture. On the other side, there are developers who insist to work quietly on their own.
 Developer misconception #1: I do my best work with headphones on</description>
+    </item>
+    
+    <item>
+      <title>Concolic Testing With KLEE</title>
+      <link>https://mloops.dev/posts/klee/</link>
+      <pubDate>Thu, 07 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://mloops.dev/posts/klee/</guid>
+      <description>In this blog post, I&amp;rsquo;d like to introduce an automatic way to test a program. Software testing isn&amp;rsquo;t a trivial task though and it&amp;rsquo;s quite unlikely that it can be automated entirely (at least in the near future). Nevertheless, there is an interesting technique called Concolic Testing which can do this to some degree.
+What is Concolic Testing? Concolic Testing combines concrete and symbolic execution for generating test-case suites where &amp;ldquo;Concolic&amp;rdquo; is a portmanteau word consisting of the words &amp;ldquo;Concrete&amp;rdquo; and &amp;ldquo;Symbolic&amp;rdquo;.</description>
     </item>
     
   </channel>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kubernetes on MLOops.dev</title>
+    <link>https://mloops.dev/tags/kubernetes/</link>
+    <description>Recent content in kubernetes on MLOops.dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 06 Apr 2019 14:54:46 +0200</lastBuildDate><atom:link href="https://mloops.dev/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why is my Cluster not Scaling Down?</title>
+      <link>https://mloops.dev/posts/reliable-gke-autoscaling/</link>
+      <pubDate>Sat, 06 Apr 2019 14:54:46 +0200</pubDate>
+      
+      <guid>https://mloops.dev/posts/reliable-gke-autoscaling/</guid>
+      <description>In my team, we regularly run batch jobs with very specific hardware requirements. A typical example is model training which usually requires (multiple) GPUs to finish within a reasonable amount of time. To run such jobs, we use the Google Kubernetes Engine (GKE) which is a managed service on the Google Cloud Platform (GCP). The workflow is to submit a job and let Kubernetes allocate the required resources, run the job, and finally deallocate the acquired resources to avoid unnecessary costs.</description>
+    </item>
+    
+  </channel>
+</rss>
