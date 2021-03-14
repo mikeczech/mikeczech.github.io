@@ -47,6 +47,8 @@
   
     <a class="color-link nav-link" href="/about/">whois</a>
   
+    <a class="color-link nav-link" href="/books/">books</a>
+  
   <a class="color-link nav-link" href="https://mloops.dev/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
 </div>
 <footer class="footer">
@@ -155,31 +157,31 @@ Nevertheless, there is an interesting technique called Concolic Testing which ca
 <p>Concolic Testing combines concrete and <a href="https://en.wikipedia.org/wiki/Symbolic_execution">symbolic execution</a> for generating test-case suites where &ldquo;Concolic&rdquo; is a <a href="https://en.wikipedia.org/wiki/Portmanteau">portmanteau word</a> consisting of the words &ldquo;Concrete&rdquo; and &ldquo;Symbolic&rdquo;.
 This approach basically determines as many execution paths as possible and generates a conjunction of symbolic constraints along each path. Eventually, those will be passed to a constraint solver and, if feasible, the outcomes are input values of the given program. Such inputs always resemble the corresponding execution path, assuming deterministic behavior of the program only. In other words, they are equivalent to test-cases.</p>
 <p>Let&rsquo;s see an example. To this end, we are going to use <a href="http://klee.github.io/klee/">KLEE</a> as Concolic Testing engine and test the following simple implementation of Euclid&rsquo;s algorithm.</p>
-<pre><code>#include&lt;assert.h&gt;
-
-int gcd(int x, int y)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;assert.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">gcd</span>(<span style="color:#66d9ef">int</span> x, <span style="color:#66d9ef">int</span> y)
 {
-    while (x != y) {
-        if (x &gt; y)
-            x = x - y;
-        else
-            y = y - x;
+    <span style="color:#66d9ef">while</span> (x <span style="color:#f92672">!=</span> y) {
+        <span style="color:#66d9ef">if</span> (x <span style="color:#f92672">&gt;</span> y)
+            x <span style="color:#f92672">=</span> x <span style="color:#f92672">-</span> y;
+        <span style="color:#66d9ef">else</span>
+            y <span style="color:#f92672">=</span> y <span style="color:#f92672">-</span> x;
     }
-    return x;
+    <span style="color:#66d9ef">return</span> x;
 }
 
-int main(int argc, char **argv) {
-    int x, y, g;
-    scanf(&quot;%d&quot;, &amp;x);
-    scanf(&quot;%d&quot;, &amp;y);
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv) {
+    <span style="color:#66d9ef">int</span> x, y, g;
+    scanf(<span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>x);
+    scanf(<span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>y);
 
-    if(x &gt; 0 &amp;&amp; y != 0) {
-        g = gcd(x, y);
-        assert(x % g == 0);
-        assert(y % g == 0);
+    <span style="color:#66d9ef">if</span>(x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> y <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+        g <span style="color:#f92672">=</span> gcd(x, y);
+        assert(x <span style="color:#f92672">%</span> g <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>);
+        assert(y <span style="color:#f92672">%</span> g <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>);
     }
 }
-</code></pre><p>First, some variables in the program must be tagged as symbolic. In this case, x and y are a good choice, since both shape the input for our gcd function. Hence, we replace both scanf lines with special KLEE commands.</p>
+</code></pre></div><p>First, some variables in the program must be tagged as symbolic. In this case, x and y are a good choice, since both shape the input for our gcd function. Hence, we replace both scanf lines with special KLEE commands.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">[...]
 <span style="color:#66d9ef">int</span> x, y, g;
 

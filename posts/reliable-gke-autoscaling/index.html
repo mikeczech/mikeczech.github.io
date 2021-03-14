@@ -47,6 +47,8 @@
   
     <a class="color-link nav-link" href="/about/">whois</a>
   
+    <a class="color-link nav-link" href="/books/">books</a>
+  
   <a class="color-link nav-link" href="https://mloops.dev/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
 </div>
 <footer class="footer">
@@ -150,96 +152,96 @@
         <p>
         <p>In my team, we regularly run batch jobs with very specific hardware requirements. A typical example is model training which usually requires (multiple) GPUs to finish within a reasonable amount of time. To run such jobs, we use the <a href="https://cloud.google.com/kubernetes-engine/"><em>Google Kubernetes Engine</em> (GKE)</a> which is a managed service on the Google Cloud Platform (GCP). The workflow is to submit a job and let Kubernetes allocate the required resources, run the job, and finally deallocate the acquired resources to avoid unnecessary costs. Typically, Kubernetes acquires new resources by provisioning new compute nodes and adding them to the cluster.</p>
 <p>GKE makes this workflow a no-brainer, but sometimes gets tricky when it comes to the details. In the past, we had the problem that Kubernetes sometimes didn&rsquo;t remove (apparently) unused nodes from the cluster again, increasing our cloud bill on a regular basis. Before clarifying why our nodes got stuck, let&rsquo;s first look at a typical GKE configuration using <a href="https://www.terraform.io/">Terraform</a>:</p>
-<pre><code>provider &quot;google-beta&quot; {
-  project = &quot;myproject&quot;
-  region  = &quot;europe-west1&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-hcl" data-lang="hcl"><span style="color:#66d9ef">provider</span> <span style="color:#e6db74">&#34;google-beta&#34;</span> {
+  project <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;myproject&#34;</span>
+  region  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;europe-west1&#34;</span>
 }
 
-resource &quot;google_container_cluster&quot; &quot;primary&quot; {
-  name               = &quot;my-cluster&quot;
-  initial_node_count = 2
-  subnetwork         = &quot;default-europe-west1&quot;
+<span style="color:#66d9ef">resource</span> <span style="color:#e6db74">&#34;google_container_cluster&#34; &#34;primary&#34;</span> {
+  name               <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my-cluster&#34;</span>
+  initial_node_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+  subnetwork         <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;default-europe-west1&#34;</span>
 
-  addons_config {
-    kubernetes_dashboard {
-      disabled = true
+  <span style="color:#66d9ef">addons_config</span> {
+    <span style="color:#66d9ef">kubernetes_dashboard</span> {
+      disabled <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
     }
   }
 
-  node_config {
-    machine_type = &quot;n1-standard-1&quot;
-    oauth_scopes = [&quot;https://www.googleapis.com/auth/cloud-platform&quot;]
-    disk_size_gb = 20
+  <span style="color:#66d9ef">node_config</span> {
+    machine_type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;n1-standard-1&#34;</span>
+    oauth_scopes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;https://www.googleapis.com/auth/cloud-platform&#34;</span>]
+    disk_size_gb <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
   }
 }
 
-resource &quot;google_container_node_pool&quot; &quot;model-training-np&quot; {
-  provider           = &quot;google-beta&quot;
-  name               = &quot;training-np&quot;
-  cluster            = &quot;my-cluster&quot;
-  initial_node_count = 0
+<span style="color:#66d9ef">resource</span> <span style="color:#e6db74">&#34;google_container_node_pool&#34; &#34;model-training-np&#34;</span> {
+  provider           <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;google-beta&#34;</span>
+  name               <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;training-np&#34;</span>
+  cluster            <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my-cluster&#34;</span>
+  initial_node_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 
-  autoscaling {
-    min_node_count = 0
-    max_node_count = 3
+  <span style="color:#66d9ef">autoscaling</span> {
+    min_node_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    max_node_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
   }
 
-  node_config {
-    machine_type = &quot;n1-standard-32&quot;
-    oauth_scopes = [&quot;https://www.googleapis.com/auth/cloud-platform&quot;]
-    disk_size_gb = 100
+  <span style="color:#66d9ef">node_config</span> {
+    machine_type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;n1-standard-32&#34;</span>
+    oauth_scopes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;https://www.googleapis.com/auth/cloud-platform&#34;</span>]
+    disk_size_gb <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
 
-    guest_accelerator {
-      type  = &quot;nvidia-tesla-k80&quot;
-      count = 4
+    <span style="color:#66d9ef">guest_accelerator</span> {
+      type  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;nvidia-tesla-k80&#34;</span>
+      count <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
     }
   }
 }
-</code></pre><p>This configuration creates a GKE cluster with a <em>default node pool</em> of two compute nodes, each one having one vCPU and about 4GB of RAM. That&rsquo;s usually sufficient for running all the GKE system services. In addition, there is a second node pool for model training where the initial node count is zero. This node pool will provide us with on-demand nodes, each one having 32 vCPUs, 120GB of RAM, and 4 GPUs! Note that autoscaling ensures a maximum number of three nodes. Thus, whenever a job is submitted to this node pool, Kubernetes automatically provisions up to three nodes in order to run our jobs. First, let&rsquo;s deploy this configuration to your GCP project:</p>
+</code></pre></div><p>This configuration creates a GKE cluster with a <em>default node pool</em> of two compute nodes, each one having one vCPU and about 4GB of RAM. That&rsquo;s usually sufficient for running all the GKE system services. In addition, there is a second node pool for model training where the initial node count is zero. This node pool will provide us with on-demand nodes, each one having 32 vCPUs, 120GB of RAM, and 4 GPUs! Note that autoscaling ensures a maximum number of three nodes. Thus, whenever a job is submitted to this node pool, Kubernetes automatically provisions up to three nodes in order to run our jobs. First, let&rsquo;s deploy this configuration to your GCP project:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcloud auth application-default login <span style="color:#75715e"># authenticate yourself to GCP</span>
 terraform plan <span style="color:#75715e"># check what Terraform is going to do</span>
 terraform apply <span style="color:#75715e"># apply the changes</span>
 </code></pre></div><p>The following snippet illustrates how a typical <a href="https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/">job configuration</a> looks like. Notice that we use a <em>node selector</em> to assign this job to our training node pool.</p>
-<pre><code>apiVersion: batch/v1
-kind: Job
-metadata:
-  name: &quot;build-model&quot;
-spec:
-  template:
-    spec:
-      containers:
-      - name: &quot;build-model&quot;
-        image: &quot;python:3.7.3-alpine3.9&quot;
-        command: [&quot;echo&quot;, &quot;train my model&quot;]
-        resources:
-          requests:
-            cpu: 24
-      restartPolicy: Never
-      nodeSelector:
-        cloud.google.com/gke-nodepool: &quot;training-np&quot;
-  backoffLimit: 0
-</code></pre><p>Let&rsquo;s submit this job to our freshly created GKE cluster:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">batch/v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Job</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;build-model&#34;</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">template</span>:
+    <span style="color:#f92672">spec</span>:
+      <span style="color:#f92672">containers</span>:
+      - <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;build-model&#34;</span>
+        <span style="color:#f92672">image</span>: <span style="color:#e6db74">&#34;python:3.7.3-alpine3.9&#34;</span>
+        <span style="color:#f92672">command</span>: [<span style="color:#e6db74">&#34;echo&#34;</span>, <span style="color:#e6db74">&#34;train my model&#34;</span>]
+        <span style="color:#f92672">resources</span>:
+          <span style="color:#f92672">requests</span>:
+            <span style="color:#f92672">cpu</span>: <span style="color:#ae81ff">24</span>
+      <span style="color:#f92672">restartPolicy</span>: <span style="color:#ae81ff">Never</span>
+      <span style="color:#f92672">nodeSelector</span>:
+        <span style="color:#f92672">cloud.google.com/gke-nodepool</span>: <span style="color:#e6db74">&#34;training-np&#34;</span>
+  <span style="color:#f92672">backoffLimit</span>: <span style="color:#ae81ff">0</span>
+</code></pre></div><p>Let&rsquo;s submit this job to our freshly created GKE cluster:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f job.yaml
 </code></pre></div><p>You&rsquo;ll see that Kubernetes now realizes that it is not able to schedule the job with the currently available nodes (remember that the initial node count of our training node pool is zero!). Thus, it creates a new node, adds it to the training node pool, and eventually runs the job on that node. So far, so good. When the job has finished, we expect Kubernetes to autoscale the node count to zero again. In case of GKE, it usually takes 20 to 30 minutes for the autoscaler to become active. As it turns out, however, you&rsquo;ll notice that such nodes sometimes just remain inside the node pool, because Kubernetes re-scheduled system services to our training nodes. To avoid running services in places where they do not belong, we must add a <em>taint</em> to our node pool configuration.</p>
-<pre><code>...
-  node_config {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-hcl" data-lang="hcl">...
+  <span style="color:#66d9ef">node_config</span> {
     ...
-    taint {
-      key    = &quot;special&quot;
-      value  = &quot;strong-cpu&quot;
-      effect = &quot;NO_SCHEDULE&quot;
+    <span style="color:#66d9ef">taint</span> {
+      key    <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;special&#34;</span>
+      value  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;strong-cpu&#34;</span>
+      effect <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;NO_SCHEDULE&#34;</span>
     }
   }
 ...
-</code></pre><p>A taint makes Kubernetes only assign workloads which tolerate that taint. Thus, we also add a toleration for that taint to our job configuration:</p>
-<pre><code>...
-      tolerations:
-      - key: &quot;special&quot;
-        operator: &quot;Equal&quot;
-        value: &quot;strong-cpu&quot;
-        effect: &quot;NoSchedule&quot;
+</code></pre></div><p>A taint makes Kubernetes only assign workloads which tolerate that taint. Thus, we also add a toleration for that taint to our job configuration:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">...
+      <span style="color:#f92672">tolerations</span>:
+      - <span style="color:#f92672">key</span>: <span style="color:#e6db74">&#34;special&#34;</span>
+        <span style="color:#f92672">operator</span>: <span style="color:#e6db74">&#34;Equal&#34;</span>
+        <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;strong-cpu&#34;</span>
+        <span style="color:#f92672">effect</span>: <span style="color:#e6db74">&#34;NoSchedule&#34;</span>
 ...
-</code></pre><p>That&rsquo;s basically it! Now we made sure that the autoscaling works reliably and our manager is happy that we only pay for resources that we actually use.</p>
+</code></pre></div><p>That&rsquo;s basically it! Now we made sure that the autoscaling works reliably and our manager is happy that we only pay for resources that we actually use.</p>
 
         </p>
     </div>
