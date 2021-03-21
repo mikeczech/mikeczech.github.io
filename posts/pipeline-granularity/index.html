@@ -184,7 +184,7 @@ But how does the implementation of pipelines with microsteps look like?</p>
 </figure>
 
 <p>It depends. For small projects I probably would recommend using <a href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html">scikit-learn pipelines</a>. For larger projects, I love using <a href="https://argoproj.github.io/argo-workflows/">argo</a> on <a href="https://kubernetes.io">Kubernetes</a> with a selection of <a href="https://aws.amazon.com/serverless/">serverless</a> services like <a href="https://cloud.google.com/bigquery">Google BigQuery</a>. A more detailed explanation would go beyond the scope of this article, however. <em>In the second part of this series, I will illustrate a concrete implementation of a ML pipeline with microsteps (coming soon).</em></p>
-<p>In summary, every step in a pipeline should be as small and self-contained as possible. The focus on building pipelines with such microsteps simplifies experimentation and improves feedback loops, scalability, and robustness.</p>
+<p>In summary, every step in a pipeline should be as small and self-contained as possible. Building pipelines with microsteps simplifies experimentation and improves feedback loops, scalability, and robustness.</p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
