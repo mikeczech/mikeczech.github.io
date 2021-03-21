@@ -2,13 +2,12 @@
 
 <html lang="en-us">
     <head>
-	<meta name="generator" content="Hugo 0.80.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>MLOops.dev</title>
+    <title>best practices | MLOops.dev</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -31,7 +30,7 @@
     
  
     
-    <link rel="alternate" type="application/rss+xml" href="https://mloops.dev/index.xml" title="MLOops.dev" />
+    <link rel="alternate" type="application/rss+xml" href="https://mloops.dev/tags/best-practices/index.xml" title="MLOops.dev" />
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
@@ -146,215 +145,29 @@
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        
-        
-        
-        <article>
+
+  <h1>Tagged "best practices"</h1>
+  
+  
+    
+    <article>
             <h2>
                 <a href="https://mloops.dev/posts/pipeline-granularity/">
                     Pipelines with Microsteps: Part 1
                 </a>
             </h2>
             <div>
-                <p>
-                  
-                  <img class="representative-image" src="/microsteps_small.png" />
-                  
-                  This is still a draft.
+                <p>This is still a draft.
 The adoption of machine learning-based approaches is still on its rise within the industry. Thus, many companies now move from a more research-oriented style of working, to the integration of machine learning into business-critical processes. Thereby, having an efficient machine learning pipeline is key.
-From the classic Apache Airflow to the modern Kubeflow: There exists an abundance of platforms for pipeline development. But even the best platform cannot compensate for bad design decisions.
-                </p>
+From the classic Apache Airflow to the modern Kubeflow: There exists an abundance of platforms for pipeline development. But even the best platform cannot compensate for bad design decisions.</p>
                 
             </div>
             <div class="post-footer">
             <time>September 14, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/machine-learning">#machine learning</a>
-                
-                    <a class="tag" href="/tags/pipeline">#pipeline</a>
-                
-                    <a class="tag" href="/tags/best-practices">#best practices</a>
-                
-            
             </div> 
-           
         </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/private-python-repo/">
-                    Setting up a Private PyPI Repository on the Google Cloud Platform
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  Update 14/03/21: Google recently announced that the Artifact Registry now supports PyPI repositories as well (alpha). I haven&rsquo;t had the time to test it myself yet, but it definitely looks promising. Thus, please consider to use the Artifact Registry instead.
-Every once in a while I am trying to solve a problem that is seemingly so fundamental that there must exist an off-the-shelf solution already. Setting up a private repository for Python packages on the Google Cloud Platform (GCP) falls into this category.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 13, 2020</time>
+    
 
-            
-            
-                
-                    <a class="tag" href="/tags/google-cloud-platform">#google cloud platform</a>
-                
-                    <a class="tag" href="/tags/gcp">#gcp</a>
-                
-                    <a class="tag" href="/tags/python">#python</a>
-                
-                    <a class="tag" href="/tags/packaging">#packaging</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/ml-engineering-five-lessons/">
-                    Five Lessons from Two Years of ML Engineering
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  <img class="representative-image" src="/ds-feedback-loop.jpg" />
-                  
-                  Today, an increasing number of companies understand that data science isn’t just about presenting insights from data analysis to decision makers, but about building data science applications such as recommendation systems or spam filters. Thus, data science teams often not only consist of data scientists, but also of machine learning engineers who bridge the gap between data science and software engineering.
-Here, I want to share five lessons I&rsquo;ve learned in the past two years working as a machine learning engineer on a variety of products.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 18, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/mlops">#mlops</a>
-                
-                    <a class="tag" href="/tags/data-science">#data science</a>
-                
-                    <a class="tag" href="/tags/software-engineering">#software engineering</a>
-                
-                    <a class="tag" href="/tags/workflow-management">#workflow management</a>
-                
-                    <a class="tag" href="/tags/testing">#testing</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/reliable-gke-autoscaling/">
-                    Why is my Cluster not Scaling Down?
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  In my team, we regularly run batch jobs with very specific hardware requirements. A typical example is model training which usually requires (multiple) GPUs to finish within a reasonable amount of time. To run such jobs, we use the Google Kubernetes Engine (GKE) which is a managed service on the Google Cloud Platform (GCP). The workflow is to submit a job and let Kubernetes allocate the required resources, run the job, and finally deallocate the acquired resources to avoid unnecessary costs.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 6, 2019</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/google-cloud-platform">#google cloud platform</a>
-                
-                    <a class="tag" href="/tags/kubernetes">#kubernetes</a>
-                
-                    <a class="tag" href="/tags/machine-learning">#machine learning</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/pair-programming/">
-                    Thoughts on Pair Programming as the Default
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  Pair programming! Apparently, there is no other agile practice that divides the dev community as this one. On one side, there are the evangelists who advocate full-time pair programming as the only means to write high-quality software. There also exist companies like Pivotal that have made this view an integral part of their culture. On the other side, there are developers who insist to work quietly on their own.
-Developer misconception #1: I do my best work with headphones on
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 1, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/agile">#agile</a>
-                
-                    <a class="tag" href="/tags/programming">#programming</a>
-                
-                    <a class="tag" href="/tags/extreme">#extreme</a>
-                
-                    <a class="tag" href="/tags/project">#project</a>
-                
-                    <a class="tag" href="/tags/team">#team</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/klee/">
-                    Concolic Testing With KLEE
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  In this blog post, I&rsquo;d like to introduce an automatic way to test a program. Software testing isn&rsquo;t a trivial task though and it&rsquo;s quite unlikely that it can be automated entirely (at least in the near future). Nevertheless, there is an interesting technique called Concolic Testing which can do this to some degree.
-What is Concolic Testing? Concolic Testing combines concrete and symbolic execution for generating test-case suites where &ldquo;Concolic&rdquo; is a portmanteau word consisting of the words &ldquo;Concrete&rdquo; and &ldquo;Symbolic&rdquo;.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>August 7, 2014</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/testing">#testing</a>
-                
-                    <a class="tag" href="/tags/research">#research</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-    </div>
-        
-        <div class="paginator">
-        
-        
-    </div>
 
         
         </div>

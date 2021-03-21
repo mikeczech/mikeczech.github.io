@@ -2,13 +2,12 @@
 
 <html lang="en-us">
     <head>
-	<meta name="generator" content="Hugo 0.80.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>MLOops.dev</title>
+    <title>Pipelines with Microsteps: Part 1 | MLOops.dev</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -30,8 +29,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://mloops.dev/index.xml" title="MLOops.dev" />
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
@@ -146,215 +143,76 @@
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        
-        
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/pipeline-granularity/">
-                    Pipelines with Microsteps: Part 1
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  <img class="representative-image" src="/microsteps_small.png" />
-                  
-                  This is still a draft.
-The adoption of machine learning-based approaches is still on its rise within the industry. Thus, many companies now move from a more research-oriented style of working, to the integration of machine learning into business-critical processes. Thereby, having an efficient machine learning pipeline is key.
-From the classic Apache Airflow to the modern Kubeflow: There exists an abundance of platforms for pipeline development. But even the best platform cannot compensate for bad design decisions.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 14, 2020</time>
 
-            
-            
-                
-                    <a class="tag" href="/tags/machine-learning">#machine learning</a>
-                
-                    <a class="tag" href="/tags/pipeline">#pipeline</a>
-                
-                    <a class="tag" href="/tags/best-practices">#best practices</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/private-python-repo/">
-                    Setting up a Private PyPI Repository on the Google Cloud Platform
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  Update 14/03/21: Google recently announced that the Artifact Registry now supports PyPI repositories as well (alpha). I haven&rsquo;t had the time to test it myself yet, but it definitely looks promising. Thus, please consider to use the Artifact Registry instead.
-Every once in a while I am trying to solve a problem that is seemingly so fundamental that there must exist an off-the-shelf solution already. Setting up a private repository for Python packages on the Google Cloud Platform (GCP) falls into this category.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 13, 2020</time>
+<h1 class="post-title">Pipelines with Microsteps: Part 1</h1>
+    
+    <time>September 14, 2020</time>
+    
+    <div>
+        <p>
+        <p><em>This is still a draft.</em></p>
+<p>The adoption of machine learning-based approaches is still on its rise within the industry.
+Thus, many companies now move from a more research-oriented style of working, to the integration of machine learning into business-critical processes.
+Thereby, <em>having an efficient machine learning pipeline is key</em>.</p>
+<p>From the classic <a href="https://airflow.apache.org">Apache Airflow</a> to the modern <a href="https://www.kubeflow.org">Kubeflow</a>:
+There exists an abundance of platforms for pipeline development.
+But even the best platform cannot compensate for bad design decisions.
+In this post, I argue that the <em>granularity of a pipeline</em> can make a real difference in terms of productivity.</p>
+<p>On the low side of the spectrum, we find “monolithic ML pipelines”.
+A <a href="https://en.wikipedia.org/wiki/Monolithic_application">monolithic application</a> describes a design philosophy where “the application is responsible not just for a particular task, but can perform every step needed to complete a particular function” <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.
+In the context of machine learning (ML), I have often encountered this philosophy in terms of a self-made framework that takes some meta information about the training-task and then executes all the subtasks that lead to a trained model and &ndash; in case of batch processing &ndash; to predictions as well.
+There is usually only a weak separation between individual subtasks and a data scientist is often restricted to what the interface of the framework offers.
+In practice, this is often mixed with smaller, more self-contained steps like data loading.
+<em>Here, we usually speak of a pipeline with a low granularity</em>.</p>
+<figure class="figure-default">
+    <img src="/monolith.png" width="1000px"/> <figcaption>
+            <h4>Figure 1: A Monolithic ML Pipeline - A single step executes most of the subtasks (e.g. feature generation, model training etc.)</h4>
+        </figcaption>
+</figure>
 
-            
-            
-                
-                    <a class="tag" href="/tags/google-cloud-platform">#google cloud platform</a>
-                
-                    <a class="tag" href="/tags/gcp">#gcp</a>
-                
-                    <a class="tag" href="/tags/python">#python</a>
-                
-                    <a class="tag" href="/tags/packaging">#packaging</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/ml-engineering-five-lessons/">
-                    Five Lessons from Two Years of ML Engineering
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  <img class="representative-image" src="/ds-feedback-loop.jpg" />
-                  
-                  Today, an increasing number of companies understand that data science isn’t just about presenting insights from data analysis to decision makers, but about building data science applications such as recommendation systems or spam filters. Thus, data science teams often not only consist of data scientists, but also of machine learning engineers who bridge the gap between data science and software engineering.
-Here, I want to share five lessons I&rsquo;ve learned in the past two years working as a machine learning engineer on a variety of products.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 18, 2020</time>
+<p>What&rsquo;s the problem here? The bread and butter of machine learning is the ability to quickly run lots of experiments on the data.
+Every experiment modifies some part of the ML pipeline and produces thereby new insights for improving the model. In addition, being able to inspect every single step of the pipeline is also critical, because the modification might come with unexpected consequences. A good ML pipeline must therefore be highly transparent and flexible enough for almost arbitrary and quick modifications. Pipelines with a low granularity do not do well on this aspect: The fast-paced nature of ML research quickly brings you to a point where the architecture of your monolith limits the opportunities for trying out new ideas. Even small modifications might therefore require deep knowledge of the underlying implementation. Furthermore, the missing separation between subtasks makes debugging difficult.
+As a result, data scientists often build an additional environment for experiments, which is separated from the pipeline that is used in production, opening the door for <a href="https://developers.google.com/machine-learning/guides/rules-of-ml#training-serving_skew">training-serving-skew</a>.
+Apart from issues with doing experiments, monolithic pipelines also fall short in terms of scalability and robustness.</p>
+<p>As a remedy, engineers should focus on <em>pipelines with a high granularity</em>. Inspired by the <a href="https://microservices.io/patterns/microservices.html">microservice architecture</a>, this means building ML pipelines that consist only of independent, small, and tested <em>microsteps</em>. For experimentation, data scientists then only need to replace or add a few microsteps. Thereby, every microstep should have a <em>fixed set of input and output data sources</em> to ease the reasoning about correctness and simplify automated testing. In a more distributed setting, microsteps can also be language-independent (e.g. using <a href="https://www.docker.com">Docker</a>), making it easier to utilize different technologies. It might also be helpful to cache intermediate results of microsteps. That way, we can skip parts of the pipeline to speed-up the feedback loop when doing experiments (e.g. skipping feature generation and concentrating on model optimization).
+Finally, an <em>orchestrator</em> (e.g. <a href="https://airflow.apache.org">Apache Airflow</a>) takes care of scheduling, execution, and error handling.
+But how does the implementation of pipelines with microsteps look like?</p>
+<figure class="figure-default">
+    <img src="/microsteps.png" width="1000px"/> <figcaption>
+            <h4>Figure 1: A ML Pipeline with Microsteps only</h4>
+        </figcaption>
+</figure>
 
-            
-            
-                
-                    <a class="tag" href="/tags/mlops">#mlops</a>
-                
-                    <a class="tag" href="/tags/data-science">#data science</a>
-                
-                    <a class="tag" href="/tags/software-engineering">#software engineering</a>
-                
-                    <a class="tag" href="/tags/workflow-management">#workflow management</a>
-                
-                    <a class="tag" href="/tags/testing">#testing</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/reliable-gke-autoscaling/">
-                    Why is my Cluster not Scaling Down?
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  In my team, we regularly run batch jobs with very specific hardware requirements. A typical example is model training which usually requires (multiple) GPUs to finish within a reasonable amount of time. To run such jobs, we use the Google Kubernetes Engine (GKE) which is a managed service on the Google Cloud Platform (GCP). The workflow is to submit a job and let Kubernetes allocate the required resources, run the job, and finally deallocate the acquired resources to avoid unnecessary costs.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 6, 2019</time>
+<p>It depends. For small projects I probably would recommend using <a href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html">scikit-learn pipelines</a>. For larger projects, I love using <a href="https://argoproj.github.io/argo-workflows/">argo</a> on <a href="https://kubernetes.io">Kubernetes</a> with a selection of <a href="https://aws.amazon.com/serverless/">serverless</a> services like <a href="https://cloud.google.com/bigquery">Google BigQuery</a>. A more detailed explanation would go beyond the scope of this article, however. <em>In the second part of this series, I will illustrate a concrete implementation of a ML pipeline with microsteps (coming soon).</em></p>
+<p>In summary, every step in a pipeline should be as small and self-contained as possible. The focus on building pipelines with such microsteps simplifies experimentation and improves feedback loops, scalability, and robustness.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p><a href="https://en.wikipedia.org/wiki/Monolithic_application">https://en.wikipedia.org/wiki/Monolithic_application</a> <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
 
-            
-            
-                
-                    <a class="tag" href="/tags/google-cloud-platform">#google cloud platform</a>
-                
-                    <a class="tag" href="/tags/kubernetes">#kubernetes</a>
-                
-                    <a class="tag" href="/tags/machine-learning">#machine learning</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/pair-programming/">
-                    Thoughts on Pair Programming as the Default
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  Pair programming! Apparently, there is no other agile practice that divides the dev community as this one. On one side, there are the evangelists who advocate full-time pair programming as the only means to write high-quality software. There also exist companies like Pivotal that have made this view an integral part of their culture. On the other side, there are developers who insist to work quietly on their own.
-Developer misconception #1: I do my best work with headphones on
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 1, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/agile">#agile</a>
-                
-                    <a class="tag" href="/tags/programming">#programming</a>
-                
-                    <a class="tag" href="/tags/extreme">#extreme</a>
-                
-                    <a class="tag" href="/tags/project">#project</a>
-                
-                    <a class="tag" href="/tags/team">#team</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://mloops.dev/posts/klee/">
-                    Concolic Testing With KLEE
-                </a>
-            </h2>
-            <div>
-                <p>
-                  
-                  In this blog post, I&rsquo;d like to introduce an automatic way to test a program. Software testing isn&rsquo;t a trivial task though and it&rsquo;s quite unlikely that it can be automated entirely (at least in the near future). Nevertheless, there is an interesting technique called Concolic Testing which can do this to some degree.
-What is Concolic Testing? Concolic Testing combines concrete and symbolic execution for generating test-case suites where &ldquo;Concolic&rdquo; is a portmanteau word consisting of the words &ldquo;Concrete&rdquo; and &ldquo;Symbolic&rdquo;.
-                </p>
-                
-            </div>
-            <div class="post-footer">
-            <time>August 7, 2014</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/testing">#testing</a>
-                
-                    <a class="tag" href="/tags/research">#research</a>
-                
-            
-            </div> 
-           
-        </article>
-        
+        </p>
     </div>
+    
+
+    
+
+    <div class="page-footer">
         
-        <div class="paginator">
+        <hr class="footer-divider">
         
+            <a class="tag" href="/tags/machine-learning">#machine learning</a>
         
+            <a class="tag" href="/tags/pipeline">#pipeline</a>
+        
+            <a class="tag" href="/tags/best-practices">#best practices</a>
+        
+      
     </div>
+
 
         
         </div>

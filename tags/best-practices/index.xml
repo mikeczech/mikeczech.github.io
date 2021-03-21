@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>best practices on MLOops.dev</title>
+    <link>https://mloops.dev/tags/best-practices/</link>
+    <description>Recent content in best practices on MLOops.dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 14 Sep 2020 12:06:21 +0200</lastBuildDate><atom:link href="https://mloops.dev/tags/best-practices/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pipelines with Microsteps: Part 1</title>
+      <link>https://mloops.dev/posts/pipeline-granularity/</link>
+      <pubDate>Mon, 14 Sep 2020 12:06:21 +0200</pubDate>
+      
+      <guid>https://mloops.dev/posts/pipeline-granularity/</guid>
+      <description>This is still a draft.
+The adoption of machine learning-based approaches is still on its rise within the industry. Thus, many companies now move from a more research-oriented style of working, to the integration of machine learning into business-critical processes. Thereby, having an efficient machine learning pipeline is key.
+From the classic Apache Airflow to the modern Kubeflow: There exists an abundance of platforms for pipeline development. But even the best platform cannot compensate for bad design decisions.</description>
+    </item>
+    
+  </channel>
+</rss>
