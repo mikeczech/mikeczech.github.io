@@ -220,7 +220,7 @@ assert_frame_equal(df, DataFrame({<span style="color:#f92672">...</span>}))
 </li>
 </ul>
 <p>What also turned out to be helpful is to restrict every notebook to a single purpose (e.g. data preparation). The larger a notebook becomes the more likely a subtle mistake is made somewhere. Moreover, small, single-purpose notebooks are great for setting up multiple experiments that only differ in very specific ways (e.g. the type of model).</p>
-<p>A more controversial, yet interesting idea is to let your workflow management <a href="https://netflixtechblog.com/scheduling-notebooks-348e6c14cfd6">automatically execute notebooks</a> to run tasks and generate plots regularly in production, as illustrated in Figure 5. Following all the best practices above, and only then, automatically running notebooks definitely makes sense to me: This way we truly unite data science and product engineering.</p>
+<p>A more controversial, yet interesting idea is to let your workflow management <a href="https://netflixtechblog.com/scheduling-notebooks-348e6c14cfd6">automatically execute notebooks</a> to orchestrate more complex experiments, as illustrated in Figure 5. Following all the best practices above, and only then, automatically running notebooks can be indeed useful.</p>
 <figure class="figure-default">
     <img src="/notebooks.jpg"/> <figcaption>
             <h4>Figure 5: Orchestrating a Composition of Notebooks</h4>
