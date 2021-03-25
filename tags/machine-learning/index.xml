@@ -6,15 +6,14 @@
     <description>Recent content in machine learning on MLOops.dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Sep 2020 12:06:21 +0200</lastBuildDate><atom:link href="https://mloops.dev/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Feb 2021 12:06:21 +0200</lastBuildDate><atom:link href="https://mloops.dev/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ML Pipelines with Microsteps: Part 1</title>
       <link>https://mloops.dev/posts/microsteps/</link>
-      <pubDate>Mon, 14 Sep 2020 12:06:21 +0200</pubDate>
+      <pubDate>Sun, 14 Feb 2021 12:06:21 +0200</pubDate>
       
       <guid>https://mloops.dev/posts/microsteps/</guid>
-      <description>This is still a draft.
-The adoption of machine learning-based approaches is still on its rise within the industry. Thus, many companies now move from a more research-oriented style of working, to the integration of machine learning into business-critical processes. Thereby, having an efficient machine learning pipeline is key.
+      <description>The adoption of machine learning-based approaches is still on its rise within the industry. Thus, many companies now move from a more research-oriented style of working, to the integration of machine learning into business-critical processes. Thereby, having an efficient machine learning pipeline is key.
 From the classic Apache Airflow to the modern Kubeflow: There exists an abundance of platforms for pipeline development. But even the best platform cannot compensate for bad design decisions.</description>
     </item>
     
